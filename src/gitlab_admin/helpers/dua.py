@@ -1,5 +1,6 @@
 import argparse
 import gitlab
+from datetime import datetime, timedelta
 
 
 class Dua:
@@ -27,13 +28,13 @@ class Dua:
         except gitlab.exceptions.GitlabGetError as err:
             print(err)
 
-
     def main(self):
         if self.nono:
-            print ('No changes will be made.')
-            
+            print('No changes will be made.')
+
+        deadline = datetime.today() - timedelta(days=7)
+
         for user in self.fetch_users():
-            print('{:>5} {} {} {} {} {} {}'.format(str(user.id), user.username, user.email, user.external,
-                                               user.projects_limit, user.can_create_group, user.can_create_project))
-
-
+            if str(user.confirmed_at) == 'None' and user.username != 'ghost':
+                    print('{:24} {:24} {:>5} {} {}'.format(str(
+                        user.created_at), str(user.confirmed_at), user.id, user.username, user.email))
