@@ -2,32 +2,31 @@
 
 from . helpers import __version__
 
-from . helpers.user import User
+from . helpers.dua import Dua
 
 import argparse
 import gitlab
 
 
-def user(args):
+def dua(args):
 
-    user = User(args)
-    user.main()
+    dua = Dua(args)
+    dua.main()
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        prog="gitlab-cli", description="ToDo: Add description")
+    parser = argparse.ArgumentParser(description="ToDo: Add description")
     parser.add_argument(
         "gitlab_instance", help="URL of your GitLab instance, e.g. https://gitlab.com/")
     parser.add_argument(
         "private_token", help="Access token for the API. You can generate one at Profile -> Settings")
     parser.add_argument("--version", action='version',
                         help='Print the version of this program.', version='%(prog)s {}'.format(__version__))
-    subparsers = parser.add_subparsers(help="Available subcommands")
 
-    parser_user = subparsers.add_parser('user', help="ToDo: Add help")
-    parser_user.add_argument('id', type=int, help='The ID of a GitLab user.')
-    parser_user.set_defaults(func=user)
+    subparsers = parser.add_subparsers(help="Available subcommands")
+    parser_dua = subparsers.add_parser('dua', help="Delete unconfirmed accounts")
+    parser_dua.add_argument('--nono', action='store_true', help='Do not make any changes')
+    parser_dua.set_defaults(func=dua)
 
     args = parser.parse_args()
     args.func(args)

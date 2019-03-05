@@ -2,12 +2,12 @@ import argparse
 import gitlab
 
 
-class User:
+class Dua:
     def __init__(self, args):
 
         self.gitlab_instance = args.gitlab_instance
         self.private_token = args.private_token
-        self.id = args.id
+        self.nono = args.nono
 
         try:
             self.gl = gitlab.Gitlab(
@@ -17,7 +17,7 @@ class User:
             print(err)
 
     def fetch_users(self):
-        users = self.gl.users.list()
+        users = self.gl.users.list(as_list=False)
         return users
 
     def fetch_user(self, id):
@@ -29,21 +29,11 @@ class User:
 
 
     def main(self):
-        user = self.fetch_user(self.id)
-        print('{:>5} {} {} {} {} {} {}'.format(str(user.id), user.username, user.email, user.external,
+        if self.nono:
+            print ('No changes will be made.')
+            
+        for user in self.fetch_users():
+            print('{:>5} {} {} {} {} {} {}'.format(str(user.id), user.username, user.email, user.external,
                                                user.projects_limit, user.can_create_group, user.can_create_project))
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        prog="user", description="ToDo: Add description")
-    parser.add_argument(
-        "gitlab_instance", help="URL of your GitLab instance, e.g. https://gitlab.com/")
-    parser.add_argument(
-        "private_token", help="Access token for the API. You can generate one at Profile -> Settings")
-    parser.add_argument(
-        "id", help="The ID of a GitLab project with issues", type=int)
-    args = parser.parse_args()
-
-    user = User(args)
-    user.main()

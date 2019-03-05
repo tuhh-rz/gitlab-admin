@@ -1,0 +1,4 @@
+/home/rztab/.local/lib/python3.7/site-packages/gitlab_admin-0.0.1-py3.7.egg
+/home/rztab/.local/bin/gitlab-admin
+/home/rztab/.local/bin/gitlab
+/home/rztab/.local/bin/chardetect

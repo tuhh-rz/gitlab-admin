@@ -1,12 +1,12 @@
 import setuptools
 
-from src.gitlab_cli.helpers import __version__
+from src.gitlab_admin.helpers import __version__
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name = "gitlab-cli",
+    name = "gitlab-admin",
     version = __version__,
     author = "Andreas Böttger, Axel Duerkop",
     author_email = "andreas.boettger@tuhh.de, axel.duerkop@tuhh.de",
@@ -16,7 +16,7 @@ setuptools.setup(
     url = "",
     packages = setuptools.find_packages(where = 'src'),
     python_requires = ">=3.6",
-    py_modules = ['api'],
+    py_modules = ['gitlab_admin.api'],
     package_dir = {
         '': 'src'
     },
@@ -27,7 +27,7 @@ setuptools.setup(
     ],
     entry_points = {
         'console_scripts': [
-            'gitlab-cli=gitlab_cli.api:main',
+            'gitlab-admin=gitlab_admin.api:main',
         ],
     },
     install_requires = [

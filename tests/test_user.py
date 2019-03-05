@@ -1,7 +1,7 @@
 import unittest
 import gitlab
 
-from . src.gitlab_cli.helpers.user import User
+from . src.gitlab_admin.helpers.user import User
 
 class TestUser(unittest.TestCase):
 
