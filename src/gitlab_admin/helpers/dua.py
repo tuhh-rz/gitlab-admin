@@ -36,5 +36,14 @@ class Dua:
 
         for user in self.fetch_users():
             if str(user.confirmed_at) == 'None' and user.username != 'ghost':
-                    print('{:24} {:24} {:>5} {} {}'.format(str(
+                # print(deadline)
+                # print(user.created_at)
+                # print(datetime.strptime(user.created_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
+                # print(type(deadline))
+                # print(type(user.created_at))
+
+                if deadline > datetime.strptime(user.created_at, '%Y-%m-%dT%H:%M:%S.%fZ'):
+                    print('{} {:24} {:24} {:>5} {} {}'.format('delete account', str(
                         user.created_at), str(user.confirmed_at), user.id, user.username, user.email))
+                    if not self.nono:
+                       user.delete()

@@ -10,3 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.1] - 2019-03-05
 ### Added
 - Basic functionality for GitLab User Entity
+
+## [0.0.2] - 2019-03-06
+### Added
+- Subcommand `dua` -> delete unconfirmed accounts
