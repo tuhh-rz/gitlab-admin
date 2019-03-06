@@ -3,3 +3,4 @@ __pycache__/
 dist/
 build/
 gitlab_admin.egg-info
+files.txt
