@@ -9,6 +9,7 @@ class Dua:
         self.gitlab_instance = args.gitlab_instance
         self.private_token = args.private_token
         self.nono = args.nono
+        self.timedelta = args.timedelta
 
         try:
             self.gl = gitlab.Gitlab(
@@ -32,11 +33,11 @@ class Dua:
         if self.nono:
             print('No changes will be made.')
 
-        deadline = datetime.today() - timedelta(days=7)
+        deadline = datetime.today() - timedelta(days=self.timedelta)
+        # print(deadline)
 
         for user in self.fetch_users():
             if str(user.confirmed_at) == 'None' and user.username != 'ghost':
-                # print(deadline)
                 # print(user.created_at)
                 # print(datetime.strptime(user.created_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
                 # print(type(deadline))

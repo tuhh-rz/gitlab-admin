@@ -26,6 +26,7 @@ def main():
     subparsers = parser.add_subparsers(help="Available subcommands")
     parser_dua = subparsers.add_parser('dua', help="Delete unconfirmed accounts")
     parser_dua.add_argument('--nono', action='store_true', help='Do not make any changes')
+    parser_dua.add_argument('-t', '--timedelta', type=int, default=7, help='time delta')
     parser_dua.set_defaults(func=dua)
 
     args = parser.parse_args()
