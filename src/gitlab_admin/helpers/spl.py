@@ -1,4 +1,3 @@
-import argparse
 import gitlab
 from datetime import datetime, timedelta
 
@@ -38,7 +37,8 @@ class Spl:
                 if not user.external and self.limit > user.projects_limit:
                     # print (user.external)
                     # print (user.projects_limit)
-                    print('{} {:>5} {} {}'.format('set project limit to ' + str(self.limit) + ' (currently ' + str (user.projects_limit) + ')', user.id, user.username, user.email))
+                    print('{} {:>5} {} {}'.format('set project limit to ' + str(self.limit) +
+                                                  ' (currently ' + str(user.projects_limit) + ')', user.id, user.username, user.email))
                     if not self.nono:
-                       user.projects_limit = self.limit
-                       user.save()
+                        user.projects_limit = self.limit
+                        user.save()

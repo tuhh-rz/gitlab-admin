@@ -1,4 +1,3 @@
-import argparse
 import gitlab
 from datetime import datetime, timedelta
 
@@ -47,4 +46,4 @@ class Dua:
                     print('{} {:24} {:24} {:>5} {} {}'.format('delete account', str(
                         user.created_at), str(user.confirmed_at), user.id, user.username, user.email))
                     if not self.nono:
-                       user.delete()
+                        user.delete()
