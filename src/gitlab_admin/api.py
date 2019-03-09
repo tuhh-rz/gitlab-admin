@@ -41,20 +41,17 @@ def create_parser():
 
 
 def dua(args):
-    dua = Dua(args)
+    dua = Dua(args.gitlab_instance, args.private_token, args.nono, args.timedelta)
     dua.main()
 
-
 def spl(args):
-    spl = Spl(args)
+    spl = Spl(args.gitlab_instance, args.private_token, args.nono, args.limit)
     spl.main()
-
 
 def main():
     parser = create_parser()
     args = parser.parse_args()
     args.func(args)
-
 
 if __name__ == "__main__":
     main()

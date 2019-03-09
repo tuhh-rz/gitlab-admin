@@ -3,12 +3,12 @@ from datetime import datetime, timedelta
 
 
 class Dua:
-    def __init__(self, args):
+    def __init__(self, gitlab_instance=None, private_token=None, nono=True, timedelta=None ):
 
-        self.gitlab_instance = args.gitlab_instance
-        self.private_token = args.private_token
-        self.nono = args.nono
-        self.timedelta = args.timedelta
+        self.gitlab_instance = gitlab_instance
+        self.private_token = private_token
+        self.nono = nono
+        self.timedelta = timedelta
 
         try:
             self.gl = gitlab.Gitlab(
@@ -45,5 +45,6 @@ class Dua:
                 if deadline > datetime.strptime(user.created_at, '%Y-%m-%dT%H:%M:%S.%fZ'):
                     print('{} {:24} {:24} {:>5} {} {}'.format('delete account', str(
                         user.created_at), str(user.confirmed_at), user.id, user.username, user.email))
+
                     if not self.nono:
                         user.delete()

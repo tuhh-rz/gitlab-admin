@@ -3,12 +3,12 @@ from datetime import datetime, timedelta
 
 
 class Spl:
-    def __init__(self, args):
+    def __init__(self, gitlab_instance=None, private_token=None, nono=True, limit=None):
 
-        self.gitlab_instance = args.gitlab_instance
-        self.private_token = args.private_token
-        self.nono = args.nono
-        self.limit = args.limit
+        self.gitlab_instance = gitlab_instance
+        self.private_token = private_token
+        self.nono = nono
+        self.limit = limit
 
         try:
             self.gl = gitlab.Gitlab(
@@ -39,6 +39,7 @@ class Spl:
                     # print (user.projects_limit)
                     print('{} {:>5} {} {}'.format('set project limit to ' + str(self.limit) +
                                                   ' (currently ' + str(user.projects_limit) + ')', user.id, user.username, user.email))
+
                     if not self.nono:
                         user.projects_limit = self.limit
                         user.save()
