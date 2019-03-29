@@ -15,7 +15,7 @@ setuptools.setup(
     long_description_content_type = "text/markdown",
     url = "",
     packages = setuptools.find_packages(where = 'src'),
-    python_requires = ">=3.6",
+    python_requires = ">=3.7",
     py_modules = ['gitlab_admin.api'],
     package_dir = {
         '': 'src'
@@ -31,6 +31,7 @@ setuptools.setup(
         ],
     },
     install_requires = [
-        'python-gitlab>=1.7.0'
+        'python-gitlab>=1.8.0'
+        'deepl>=0.3'
     ]
 )

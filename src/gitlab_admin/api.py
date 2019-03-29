@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-from . helpers import __version__
+from helpers import __version__
 
-from . helpers.dua import Dua
-from . helpers.spl import Spl
+from helpers.sac import Sac
+from helpers.dua import Dua
+from helpers.spl import Spl
 
 import argparse
 import gitlab
@@ -29,6 +30,12 @@ def create_parser():
                             default=7, help='time delta')
     parser_dua.set_defaults(func=dua)
 
+    parser_sac = subparsers.add_parser(
+        'sac', help="Find spam accounts")
+    parser_sac.add_argument('--nono', action='store_true',
+                            help='Do not make any changes')
+    parser_sac.set_defaults(func=sac)
+
     parser_spl = subparsers.add_parser(
         'spl', help="Set the project limit of all accounts to a concrete value if the current value is smaller.")
     parser_spl.add_argument('--nono', action='store_true',
@@ -39,6 +46,9 @@ def create_parser():
 
     return parser
 
+def sac(args):
+    sac = Sac(args.gitlab_instance, args.private_token, args.nono)
+    sac.main()
 
 def dua(args):
     dua = Dua(args.gitlab_instance, args.private_token, args.nono, args.timedelta)
