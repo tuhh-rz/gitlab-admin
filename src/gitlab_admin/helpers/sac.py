@@ -1,5 +1,7 @@
 import gitlab
 
+import time
+
 from datetime import datetime, timedelta
 from googletrans import Translator
 
@@ -30,16 +32,6 @@ class Sac:
         except gitlab.exceptions.GitlabGetError as err:
             print(err)
 
-    # def fetch_groups(self, id=0):
-    #     if id == 0:
-    #         for group in self.gl.groups.list(as_list=False):
-    #             print("MG " + group.full_path)
-    #             self.fetch_groups(group.id)
-    #     else:
-    #         for group in self.gl.groups.get(id).subgroups.list(as_list=False):
-    #             print("SG " + group.full_path)
-    #             self.fetch_groups(group.id)
-
     def main(self):
         if self.nono:
             print('No changes will be made.')
@@ -50,13 +42,33 @@ class Sac:
         # Mir ist es egal, w´in welcher Gruppe ein User ist.
         # Deshalb interessiert mich nur, wer Mitglied in einer Gruppe ist
         groups = self.gl.groups.list(as_list=False)
-        members = []
+        groups_member_ids = {}
+
+        print ("Reading group members …")
 
         for group in groups:
             try:
-                members.append(group.members.list(as_list=False))
+                group_members = group.members.list(as_list=False)
+                for group_member in group_members:
+                    groups_member_ids[group_member.id] = group_member.name
             except Exception as identifier:
                 pass
+
+        projects = self.gl.projects.list(as_list=False)
+        projects_member_ids = {}
+
+        print ("Reading project members …")
+
+        for project in projects:
+            try:
+                project_members = project.members.list(as_list=False)
+                for project_member in project_members:
+                    projects_member_ids[project_member.id] = project_member.name
+            except Exception as identifier:
+                pass
+
+        timestr = time.strftime("%Y%m%d-%H%M%S")
+        spam = open('spam-' + timestr, 'w')
 
         for element in self.fetch_all():
             if element.username != 'ghost' and element.external:
@@ -65,28 +77,27 @@ class Sac:
                 # print(type(deadline))
                 # print(type(user.created_at))
 
-                personal_projects = 0
-                group_membership = 0
-
                 if element.website_url != '' and element.bio != '':
                     # translator = Translator()
                     # translation = translator.translate(element.bio, dest='de')
 
-                    personal_projects = element.projects.list(as_list=False)
-                    personal_projects_len = len(personal_projects)
+                    if not element.id in projects_member_ids and not element.id in groups_member_ids:
 
 
-
-
-                    if personal_projects_len == 0 and group_membership == 0:
-                        print (element.external)
                         print (element.bio)
                         print (element.last_sign_in_at)
                         # print(element.id)
-                        # print(element.website_url)
+                        print(element.website_url)
                         print(element.web_url)
-                        print()
-                    # print(translation.text)
+                        # print(translation.text)
+
+                        delete_answer = input("Delete? ")
+                        if delete_answer == "Y" or delete_answer == "y":
+                            spam.write(element.bio + '\n')
+                            spam.flush()
+                            element.delete()
 
                     # if not self.nono:
                     #     element.delete()
+
+        spam.close()
