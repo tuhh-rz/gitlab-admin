@@ -32,6 +32,8 @@ def create_parser():
 
     parser_sac = subparsers.add_parser(
         'sac', help="Find spam accounts")
+    parser_sac.add_argument('--nocache', action='store_true',
+                            help='Do not use cached files')
     parser_sac.add_argument('--nono', action='store_true',
                             help='Do not make any changes')
     parser_sac.set_defaults(func=sac)
