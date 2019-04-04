@@ -4,3 +4,5 @@ dist/
 build/
 gitlab_admin.egg-info
 out/
+cache/groups_member_ids.json
+cache/projects_member_ids.json
