@@ -50,12 +50,12 @@ class Sac:
         # translator = Translator()
         # translation = translator.translate(element.bio, dest='de')
 
-        print ('name: ' + element.name)
-        print ('bio: ' + element.bio)
+        if element.name: print ('name: ' + element.name)
+        if element.bio: print ('bio: ' + element.bio)
         # print(element.id)
-        print('website_url: ' + element.website_url)
-        print('web_url: ' + element.web_url)
-        print ('last_sign_in_at: ' + element.last_sign_in_at)
+        if element.website_url: print('website_url: ' + element.website_url)
+        if element.web_url: print('web_url: ' + element.web_url)
+        if element.last_sign_in_at: print ('last_sign_in_at: ' + element.last_sign_in_at)
         # print(translation.text)
 
     def fetch_all(self):
@@ -118,7 +118,7 @@ class Sac:
 
         if Path("cache/whitelist.json").is_file() and os.stat('cache/whitelist.json').st_size > 0:
             with open('cache/whitelist.json', 'r') as handle:
-                self.whitelist_member_ids = json.loads(handle.read())
+                self.whitelist_member_ids = set(json.loads(handle.read()))
 
         if Path("spam/spam.json").is_file() and os.stat('spam/spam.json').st_size > 0:
             with open('spam/spam.json', 'r') as handle:
@@ -131,35 +131,65 @@ class Sac:
                 # print(type(deadline))
                 # print(type(user.created_at))
 
+                for k, v in self.spam_accounts.items():
+                    if element.website_url != '' and v['website_url'].lower() == element.website_url.lower():
+                        print ('Cached SPAM URL: ' + element.website_url)
+                        self.print_info(element)
+
+                        delete_block = input("Delete/Block (d/b/n)? ")
+                        if delete_block == "d":
+                            if not self.nono:
+                                 element.delete()
+                        elif delete_block == "b":
+                            if not self.nono:
+                                element.block()
+                        print()
+                    if element.bio != '' and v['bio'] == element.bio:
+                        print ('Cached SPAM Bio: ' + element.bio)
+                        self.print_info(element)
+
+                        delete_block = input("Delete/Block (d/b/n)? ")
+                        if delete_block == "d":
+                            if not self.nono:
+                                 element.delete()
+                        elif delete_block == "b":
+                            if not self.nono:
+                                 element.block()
+                        elif input("Whitelist? (y/n)? ") == "y":
+                            self.whitelist_member_ids.add(element.id)
+                        print()
+
                 if element.website_url != '' and element.bio != '' and not element.id in projects_member_ids and not element.id in groups_member_ids:
                     self.print_info(element)
 
                     delete_block = input("Delete/Block (d/b/n)? ")
                     if delete_block == "d":
-                        self.spam_accounts[element.id] = element.attributes
                         if not self.nono:
+                            self.spam_accounts[element.id] = element.attributes
                             element.delete()
                     elif delete_block == "b":
-                        self.spam_accounts[element.id] = element.attributes
                         if not self.nono:
+                            self.spam_accounts[element.id] = element.attributes
                             element.block()
                     elif input("Whitelist? (y/n)? ") == "y":
                         self.whitelist_member_ids.add(element.id)
+                    print()
 
-                elif element.website_url != '' and (not re.match( r'\s', element.name, re.M|re.I) or element.name.islower()):
+                elif element.website_url != '' and (not re.match( r'.*\s.*', element.name) or element.name.islower()):
                     self.print_info(element)
 
                     delete_block = input("Delete/Block (d/b/n)? ")
                     if delete_block == "d":
-                        self.spam_accounts[element.id] = element.attributes
                         if not self.nono:
+                            self.spam_accounts[element.id] = element.attributes
                             element.delete()
                     elif delete_block == "b":
-                        self.spam_accounts[element.id] = element.attributes
                         if not self.nono:
+                            self.spam_accounts[element.id] = element.attributes
                             element.block()
                     elif input("Whitelist? (y/n)? ") == "y":
                         self.whitelist_member_ids.add(element.id)
+                    print()
 
         with open('cache/whitelist.json', 'w+') as handle:
             json.dump(list(self.whitelist_member_ids), handle)
