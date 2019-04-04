@@ -1,6 +1,9 @@
 import gitlab
 import json
 import os
+import re
+import signal
+import sys
 
 import time
 
@@ -8,15 +11,22 @@ from datetime import datetime, timedelta
 from googletrans import Translator
 from pathlib import Path
 
+
+
 # Potentielle Spam Accounts ermitteln
 
 class Sac:
-    def __init__(self, gitlab_instance=None, private_token=None, nocache=True, nono=True ):
+    def __init__(self, gitlab_instance=None, private_token=None, nocache=True, nono=False ):
+
+        signal.signal(signal.SIGINT, self.signal_handler)
 
         self.gitlab_instance = gitlab_instance
         self.private_token = private_token
         self.nocache = nocache
         self.nono = nono
+
+        self.whitelist_member_ids = set()
+        self.spam_accounts = dict()
 
         try:
             self.gl = gitlab.Gitlab(
@@ -24,6 +34,29 @@ class Sac:
                 private_token=self.private_token)
         except gitlab.config.GitlabConfigMissingError as err:
             print(err)
+
+    def signal_handler(self, sig, frame):
+        print('You pressed Ctrl+C!')
+
+        with open('cache/whitelist.json', 'w+') as handle:
+            json.dump(list(self.whitelist_member_ids), handle)
+
+        with open('spam/spam.json', 'w+') as handle:
+            json.dump(self.spam_accounts, handle)
+
+        sys.exit(0)
+
+    def print_info(self, element):
+        # translator = Translator()
+        # translation = translator.translate(element.bio, dest='de')
+
+        print ('name: ' + element.name)
+        print ('bio: ' + element.bio)
+        # print(element.id)
+        print('website_url: ' + element.website_url)
+        print('web_url: ' + element.web_url)
+        print ('last_sign_in_at: ' + element.last_sign_in_at)
+        # print(translation.text)
 
     def fetch_all(self):
         users = self.gl.users.list(as_list=False)
@@ -81,35 +114,55 @@ class Sac:
             with open('cache/projects_member_ids.json', 'w') as handle:
                 json.dump(list(projects_member_ids), handle)
 
-        timestr = time.strftime("%Y%m%d-%H%M%S")
-        spam = open('spam_out/' + timestr, 'w')
+
+
+        if Path("cache/whitelist.json").is_file() and os.stat('cache/whitelist.json').st_size > 0:
+            with open('cache/whitelist.json', 'r') as handle:
+                self.whitelist_member_ids = json.loads(handle.read())
+
+        if Path("spam/spam.json").is_file() and os.stat('spam/spam.json').st_size > 0:
+            with open('spam/spam.json', 'r') as handle:
+                self.spam_accounts = json.loads(handle.read())
 
         for element in self.fetch_all():
-            if element.username != 'ghost' and element.external:
+            if element.state == 'active' and not element.id in self.whitelist_member_ids and element.username != 'ghost' and element.external:
                 # print(user.created_at)
                 # print(datetime.strptime(user.created_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
                 # print(type(deadline))
                 # print(type(user.created_at))
 
-                if element.website_url != '' and element.bio != '':
-                    # translator = Translator()
-                    # translation = translator.translate(element.bio, dest='de')
+                if element.website_url != '' and element.bio != '' and not element.id in projects_member_ids and not element.id in groups_member_ids:
+                    self.print_info(element)
 
-                    if not element.id in projects_member_ids and not element.id in groups_member_ids:
-                        print (element.bio)
-                        print (element.last_sign_in_at)
-                        # print(element.id)
-                        print(element.website_url)
-                        print(element.web_url)
-                        # print(translation.text)
+                    delete_block = input("Delete/Block (d/b/n)? ")
+                    if delete_block == "d":
+                        self.spam_accounts[element.id] = element.attributes
+                        if not self.nono:
+                            element.delete()
+                    elif delete_block == "b":
+                        self.spam_accounts[element.id] = element.attributes
+                        if not self.nono:
+                            element.block()
+                    elif input("Whitelist? (y/n)? ") == "y":
+                        self.whitelist_member_ids.add(element.id)
 
-                        delete_answer = input("Delete (y/n)? ")
-                        if delete_answer == "Y" or delete_answer == "y":
-                            spam.write(element.bio + '\n')
-                            spam.flush()
-                            if not self.nono:
-                                element.delete()
+                elif element.website_url != '' and (not re.match( r'\s', element.name, re.M|re.I) or element.name.islower()):
+                    self.print_info(element)
 
-        spam.close()
-        if os.stat('spam_out/' + timestr).st_size == 0:
-            os.remove('spam_out/' + timestr)
+                    delete_block = input("Delete/Block (d/b/n)? ")
+                    if delete_block == "d":
+                        self.spam_accounts[element.id] = element.attributes
+                        if not self.nono:
+                            element.delete()
+                    elif delete_block == "b":
+                        self.spam_accounts[element.id] = element.attributes
+                        if not self.nono:
+                            element.block()
+                    elif input("Whitelist? (y/n)? ") == "y":
+                        self.whitelist_member_ids.add(element.id)
+
+        with open('cache/whitelist.json', 'w+') as handle:
+            json.dump(list(self.whitelist_member_ids), handle)
+
+        with open('spam/spam.json', 'w+') as handle:
+            json.dump(self.spam_accounts, handle)

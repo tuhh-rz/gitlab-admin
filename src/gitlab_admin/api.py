@@ -49,7 +49,7 @@ def create_parser():
     return parser
 
 def sac(args):
-    sac = Sac(args.gitlab_instance, args.private_token, args.nono)
+    sac = Sac(args.gitlab_instance, args.private_token, args.nocache, args.nono)
     sac.main()
 
 def dua(args):
