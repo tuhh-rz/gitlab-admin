@@ -74,7 +74,7 @@ class Sac:
 
         msg = EmailMessage()
         msg.set_content("""\
-Hallo """ + element.name + """\
+Hallo """ + element.email + """,\
 
 
 ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als Spam eingestuft und aus diesem Grund blokiert.
@@ -90,7 +90,7 @@ https://collaborating.tuhh.de/
 
 ---
 
-Hello """ + element.mail + """\
+Hello """ + element.email + """,\
 
 
 Your TUHH GitLab account (https://collaborating.tuhh.de/) has been classified as spam and has been blocked for this reason.
