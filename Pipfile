@@ -16,4 +16,4 @@ gitlab-admin = {editable = true,path = "."}
 simplejson = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.5.2"

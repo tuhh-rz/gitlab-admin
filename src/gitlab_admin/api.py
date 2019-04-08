@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import __version__
+from . import __version__
 
 from .helpers.sac import Sac
 from .helpers.dua import Dua
