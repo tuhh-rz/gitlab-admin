@@ -1,6 +1,6 @@
 import setuptools
 
-from src.gitlab_admin.helpers import __version__
+from src.gitlab_admin import __version__
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -31,7 +31,9 @@ setuptools.setup(
         ],
     },
     install_requires = [
-        'python-gitlab>=1.8.0'
-        'deepl>=0.3'
-    ]
+        'python-gitlab >= 1.8.0',
+        'googletrans',
+        'simplejson',
+        'pathlib',
+    ],
 )

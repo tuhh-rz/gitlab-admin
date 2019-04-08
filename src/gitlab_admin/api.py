@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-from helpers import __version__
+from .helpers import __version__
 
-from helpers.sac import Sac
-from helpers.dua import Dua
-from helpers.spl import Spl
+from .helpers.sac import Sac
+from .helpers.dua import Dua
+from .helpers.spl import Spl
 
 import argparse
 import gitlab

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cad95bcf6c7a1b8a146144697df2196f15ffd646a2f0d790cf6c0d4a860efffc"
+            "sha256": "84707b9777e90ce585876e7c7d12e3228c16a655ebdb0f1ce91953ba3d16bbb6"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -29,6 +29,10 @@
                 "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"
             ],
             "version": "==3.0.4"
+        },
+        "gitlab-admin": {
+            "editable": true,
+            "path": "."
         },
         "googletrans": {
             "hashes": [

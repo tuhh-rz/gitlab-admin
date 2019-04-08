@@ -11,8 +11,9 @@ rope = "*"
 [packages]
 python-gitlab = ">=1.8.0"
 googletrans = "*"
-simplejson = "*"
 pathlib = "*"
+gitlab-admin = {editable = true,path = "."}
+simplejson = "*"
 
 [requires]
 python_version = "3.7"
