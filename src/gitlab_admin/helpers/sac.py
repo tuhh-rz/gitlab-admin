@@ -109,7 +109,7 @@ https://collaborating.tuhh.de/
         msg['From'] = 'nobody@tuhh.de'
         msg['To'] = 'andreas.boettger@tuhh.de'
 
-        s = smtplib.SMTP('mail.tuhh.de')
+        s = smtplib.SMTP('localhost')
         s.send_message(msg)
         s.quit()
 
