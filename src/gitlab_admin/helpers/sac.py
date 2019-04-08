@@ -90,7 +90,7 @@ https://collaborating.tuhh.de/
 
 ---
 
-Hello """ + element.mail + """,\
+Hello """ + element.mail + """\
 
 
 Your TUHH GitLab account (https://collaborating.tuhh.de/) has been classified as spam and has been blocked for this reason.
