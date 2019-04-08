@@ -14,3 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.2] - 2019-03-06
 ### Added
 - Subcommand `dua` -> delete unconfirmed accounts
+
+## [0.0.3] - 2019-04-06
+### Added
+- Subcommand `sac` -> find spam accounts
