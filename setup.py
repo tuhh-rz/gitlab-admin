@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name = "gitlab-admin",
     version = __version__,
-    author = "Andreas Böttger, Axel Duerkop",
+    author = "Andreas Boettger, Axel Duerkop",
     author_email = "andreas.boettger@tuhh.de, axel.duerkop@tuhh.de",
     description = "",
     long_description = long_description,
