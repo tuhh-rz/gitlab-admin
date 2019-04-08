@@ -74,7 +74,7 @@ class Sac:
 
         msg = EmailMessage()
         msg.set_content("""\
-Hallo """ + element.email + """,\
+Hallo """ + element.name + """,\
 
 
 ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als Spam eingestuft und aus diesem Grund blokiert.
@@ -90,7 +90,7 @@ https://collaborating.tuhh.de/
 
 ---
 
-Hello """ + element.email + """,\
+Hello """ + element.name + """,\
 
 
 Your TUHH GitLab account (https://collaborating.tuhh.de/) has been classified as spam and has been blocked for this reason.
@@ -107,7 +107,7 @@ https://collaborating.tuhh.de/
 
         msg['Subject'] = 'Ihr Account wurde blockiert / Your account has been blocked.'
         msg['From'] = 'nobody@tuhh.de'
-        msg['To'] = 'andreas.boettger@tuhh.de'
+        msg['To'] = element.email
 
         s = smtplib.SMTP('localhost')
         s.send_message(msg)
