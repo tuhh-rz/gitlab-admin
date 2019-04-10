@@ -42,7 +42,7 @@ class Dua:
                 # print(type(deadline))
                 # print(type(user.created_at))
 
-                if deadline > datetime.strptime(user.created_at, '%Y-%m-%dT%H:%M:%S.%fZ'):
+                if deadline > datetime.strptime(user.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%f'):
                     print('{} {:24} {:24} {:>5} {} {}'.format('delete account', str(
                         user.created_at), str(user.confirmed_at), user.id, user.username, user.email))
 
