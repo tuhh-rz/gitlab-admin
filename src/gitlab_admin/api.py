@@ -2,7 +2,7 @@
 
 from . import __version__
 
-from .helpers.sac import Sac
+from .helpers.bsa import Bsa
 from .helpers.dua import Dua
 from .helpers.spl import Spl
 
@@ -31,12 +31,12 @@ def create_parser():
     parser_dua.set_defaults(func=dua)
 
     parser_sac = subparsers.add_parser(
-        'sac', help="Find spam accounts")
+        'bsa', help="Find spam accounts")
     parser_sac.add_argument('--nocache', action='store_true',
                             help='Do not use cached files')
     parser_sac.add_argument('--nono', action='store_true',
                             help='Do not make any changes')
-    parser_sac.set_defaults(func=sac)
+    parser_sac.set_defaults(func=bsa)
 
     parser_spl = subparsers.add_parser(
         'spl', help="Set the project limit of all accounts to a concrete value if the current value is smaller.")
@@ -48,9 +48,9 @@ def create_parser():
 
     return parser
 
-def sac(args):
-    sac = Sac(args.gitlab_instance, args.private_token, args.nocache, args.nono)
-    sac.main()
+def bsa(args):
+    bsa = Bsa(args.gitlab_instance, args.private_token, args.nocache, args.nono)
+    bsa.main()
 
 def dua(args):
     dua = Dua(args.gitlab_instance, args.private_token, args.nono, args.timedelta)

@@ -18,3 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.3] - 2019-04-06
 ### Added
 - Subcommand `sac` -> find spam accounts
+
+## [0.0.4] - 2019-04-24
+### Renamed
+- Subcommand `sac` -> `bsa`
