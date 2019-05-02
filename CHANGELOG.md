@@ -22,3 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.4] - 2019-04-24
 ### Renamed
 - Subcommand `sac` -> `bsa`
+
+
+## [0.4.0] - 2019-05-02
+### Added
+- Subcommand `gfe` -> get former external accounts
