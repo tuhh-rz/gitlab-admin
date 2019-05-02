@@ -5,15 +5,16 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
-pylint = "*"
 rope = "*"
+pylint = "*"
 
 [packages]
 python-gitlab = ">=1.8.0"
 googletrans = "*"
 pathlib = "*"
-gitlab-admin = {editable = true,path = "."}
 simplejson = "*"
+gitlab-admin = {editable = true,path = "."}
+pylint = "*"
 
 [requires]
 python_version = "3.5.2"

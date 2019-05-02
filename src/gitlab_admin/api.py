@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
-from . import __version__
+from gitlab_admin import __version__
 
-from .helpers.bsa import Bsa
-from .helpers.dua import Dua
-from .helpers.spl import Spl
+from gitlab_admin.helpers.bsa import Bsa
+from gitlab_admin.helpers.dua import Dua
+from gitlab_admin.helpers.spl import Spl
+from gitlab_admin.helpers.gfe import Gfe
 
 import argparse
 import gitlab
@@ -21,6 +22,10 @@ def create_parser():
                         help='Print the version of this program.', version='%(prog)s {}'.format(__version__))
 
     subparsers = parser.add_subparsers(help="Available subcommands")
+
+    parser_gfe = subparsers.add_parser(
+        'gfe', help="Get former external accounts")
+    parser_gfe.set_defaults(func=gfe)
 
     parser_dua = subparsers.add_parser(
         'dua', help="Delete unconfirmed accounts")
@@ -47,6 +52,10 @@ def create_parser():
     parser_spl.set_defaults(func=spl)
 
     return parser
+
+def gfe(args):
+    gfe = Gfe(args.gitlab_instance, args.private_token)
+    gfe.main()
 
 def bsa(args):
     bsa = Bsa(args.gitlab_instance, args.private_token, args.nocache, args.nono)
