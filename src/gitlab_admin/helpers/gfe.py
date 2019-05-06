@@ -36,5 +36,5 @@ class Gfe:
                         break
 
                 if not internal:
-                    print('{:>5} {} {}'.format(user.id, user.username, user.email))
+                    print('{:>5} {} {} {:>5}'.format(user.id, user.username, user.email, len(user.projects.list())))
 

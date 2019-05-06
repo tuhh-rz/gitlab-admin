@@ -1,14 +1,10 @@
-#!/usr/bin/env python
+import argparse
 
 from gitlab_admin import __version__
-
 from gitlab_admin.helpers.bsa import Bsa
 from gitlab_admin.helpers.dua import Dua
-from gitlab_admin.helpers.spl import Spl
 from gitlab_admin.helpers.gfe import Gfe
-
-import argparse
-import gitlab
+from gitlab_admin.helpers.spl import Spl
 
 
 def create_parser():

@@ -1,5 +1,4 @@
 import gitlab
-from datetime import datetime, timedelta
 
 
 class Spl:

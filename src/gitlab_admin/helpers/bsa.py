@@ -1,17 +1,12 @@
-import gitlab
 import json
 import re
 import signal
-import sys
 import smtplib
-
-import time
-
-from datetime import datetime, timedelta
-from googletrans import Translator
-from pathlib import Path
+import sys
 from email.message import EmailMessage
+from pathlib import Path
 
+import gitlab
 
 
 # Potentielle Spam Accounts ermitteln und blocken

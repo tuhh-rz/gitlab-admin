@@ -1,5 +1,6 @@
-import gitlab
 from datetime import datetime, timedelta
+
+import gitlab
 
 
 class Dua:
