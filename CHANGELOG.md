@@ -27,3 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.0] - 2019-05-02
 ### Added
 - Subcommand `gfe` -> get former external accounts
+
+## [0.5.0] - 2019-05-06
+### Added
+- Subcommand `ffe` -> fix false external accounts
