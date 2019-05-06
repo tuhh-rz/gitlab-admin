@@ -5,3 +5,4 @@ build/
 gitlab_admin.egg-info
 out/
 files.txt
+.idea/
