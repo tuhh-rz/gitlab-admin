@@ -5,6 +5,7 @@ from gitlab_admin.helpers.bsa import Bsa
 from gitlab_admin.helpers.dua import Dua
 from gitlab_admin.helpers.gfe import Gfe
 from gitlab_admin.helpers.spl import Spl
+from gitlab_admin.helpers.ffe import Ffe
 
 
 def create_parser():
@@ -22,6 +23,12 @@ def create_parser():
     parser_gfe = subparsers.add_parser(
         'gfe', help="Get former external accounts")
     parser_gfe.set_defaults(func=gfe)
+
+    parser_ffe = subparsers.add_parser(
+        'ffe', help="Fix false external")
+    parser_ffe.add_argument('--nono', action='store_true',
+                            help='Do not make any changes')
+    parser_ffe.set_defaults(func=ffe)
 
     parser_dua = subparsers.add_parser(
         'dua', help="Delete unconfirmed accounts")
@@ -52,6 +59,10 @@ def create_parser():
 def gfe(args):
     gfe = Gfe(args.gitlab_instance, args.private_token)
     gfe.main()
+
+def ffe(args):
+    ffe = Ffe(args.gitlab_instance, args.private_token, args.nono)
+    ffe.main()
 
 def bsa(args):
     bsa = Bsa(args.gitlab_instance, args.private_token, args.nocache, args.nono)
