@@ -12,7 +12,7 @@ from gitlab import Gitlab, config, exceptions
 # Potentielle Spam Accounts ermitteln und blocken
 
 class Bsa:
-    def __init__(self, gitlab_instance=None, private_token=None, nocache=True, nono=False):
+    def __init__(self, gitlab_instance=None, private_token=None, nocache=True, nono=False, cron=False):
 
         signal.signal(signal.SIGINT, self.signal_handler)
 
@@ -28,6 +28,7 @@ class Bsa:
         self.private_token = private_token
         self.nocache = nocache
         self.nono = nono
+        self.cron = cron
 
         self.whitelist_member_ids = set()
         self.spam_accounts = dict()
@@ -49,6 +50,11 @@ class Bsa:
             json.dump(self.spam_accounts, handle)
 
         sys.exit(0)
+
+    @staticmethod
+    def print_short_info(element):
+        if element.name:
+            print('name: ' + element.name)
 
     @staticmethod
     def print_info(element):
@@ -109,9 +115,12 @@ https://collaborating.tuhh.de/
         msg['From'] = 'nobody@tuhh.de'
         msg['To'] = element.email
 
-        s = smtplib.SMTP('localhost')
-        s.send_message(msg)
-        s.quit()
+        try:
+            s = smtplib.SMTP('localhost')
+            s.send_message(msg)
+            s.quit()
+        except ConnectionRefusedError:
+            pass
 
     def fetch_all(self):
         users = self.gl.users.list(as_list=False)
@@ -125,9 +134,13 @@ https://collaborating.tuhh.de/
             print(err)
 
     def fire(self, element):
-        self.print_info(element)
+        if self.cron:
+            self.print_short_info(element)
+            block_account = "b"
+        else:
+            self.print_info(element)
+            block_account = input("Block/Nothing (b/n)? ")
 
-        block_account = input("Block/Nothing (b/n)? ")
         if block_account == "b":
             if not self.nono:
                 self.spam_accounts[element.id] = element.attributes
@@ -137,13 +150,15 @@ https://collaborating.tuhh.de/
         print()
 
     def main(self):
-        if self.nono:
+        if self.nono and not self.cron:
             print('No changes will be made.')
 
-        print("Reading group members …")
+        if not self.cron:
+            print ("Reading group members …")
 
         if not self.nocache and Path(self.path_groups_member_ids).is_file():
-            print("… using cache")
+            if not self.cron:
+                print("… using cache")
             with open(self.path_groups_member_ids) as handle:
                 groups_member_ids = json.loads(handle.read())
         else:
@@ -162,10 +177,12 @@ https://collaborating.tuhh.de/
             with open(self.path_groups_member_ids, 'w') as handle:
                 json.dump(list(groups_member_ids), handle)
 
-        print("Reading project members …")
+        if not self.cron:
+            print("Reading project members …")
 
         if not self.nocache and Path(self.path_projects_member_ids).is_file():
-            print("… using cache")
+            if not self.cron:
+                print("… using cache")
             with open(self.path_projects_member_ids) as handle:
                 projects_member_ids = json.loads(handle.read())
         else:
@@ -205,7 +222,6 @@ https://collaborating.tuhh.de/
                 if not was_cached:
                     if element.website_url != '' and element.bio != '' and not element.id in projects_member_ids and not element.id in groups_member_ids:
                         self.fire(element)
-
                     elif element.website_url != '' and (not re.match(r'.*\s.*', element.name) or element.name.islower()):
                         self.fire(element)
 

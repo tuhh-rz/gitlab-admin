@@ -39,11 +39,13 @@ def create_parser():
     parser_dua.set_defaults(func=dua)
 
     parser_sac = subparsers.add_parser(
-        'bsa', help="Find spam accounts")
+        'bsa', help="Block spam accounts")
     parser_sac.add_argument('--nocache', action='store_true',
                             help='Do not use cached files')
     parser_sac.add_argument('--nono', action='store_true',
                             help='Do not make any changes')
+    parser_sac.add_argument('--cron', action='store_true',
+                            help='Do not ask me')
     parser_sac.set_defaults(func=bsa)
 
     parser_spl = subparsers.add_parser(
@@ -68,7 +70,7 @@ def ffe(args):
 
 
 def bsa(args):
-    bsa = Bsa(args.gitlab_instance, args.private_token, args.nocache, args.nono)
+    bsa = Bsa(args.gitlab_instance, args.private_token, args.nocache, args.nono, args.cron)
     bsa.main()
 
 
