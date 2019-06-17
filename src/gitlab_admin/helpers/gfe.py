@@ -1,5 +1,4 @@
-import gitlab
-from datetime import datetime, timedelta
+from gitlab import Gitlab, config, exceptions
 
 
 class Gfe:
@@ -8,10 +7,10 @@ class Gfe:
         self.gitlab_instance = gitlab_instance
         self.private_token = private_token
         try:
-            self.gl = gitlab.Gitlab(
+            self.gl = Gitlab(
                 self.gitlab_instance,
                 private_token=self.private_token)
-        except gitlab.config.GitlabConfigMissingError as err:
+        except config.GitlabConfigMissingError as err:
             print(err)
 
     def fetch_users(self):
@@ -22,7 +21,7 @@ class Gfe:
         try:
             user = self.gl.users.get(id)
             return user
-        except gitlab.exceptions.GitlabGetError as err:
+        except exceptions.GitlabGetError as err:
             print(err)
 
     def main(self):

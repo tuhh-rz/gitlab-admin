@@ -56,30 +56,37 @@ def create_parser():
 
     return parser
 
+
 def gfe(args):
     gfe = Gfe(args.gitlab_instance, args.private_token)
     gfe.main()
+
 
 def ffe(args):
     ffe = Ffe(args.gitlab_instance, args.private_token, args.nono)
     ffe.main()
 
+
 def bsa(args):
     bsa = Bsa(args.gitlab_instance, args.private_token, args.nocache, args.nono)
     bsa.main()
+
 
 def dua(args):
     dua = Dua(args.gitlab_instance, args.private_token, args.nono, args.timedelta)
     dua.main()
 
+
 def spl(args):
     spl = Spl(args.gitlab_instance, args.private_token, args.nono, args.limit)
     spl.main()
+
 
 def main():
     parser = create_parser()
     args = parser.parse_args()
     args.func(args)
+
 
 if __name__ == "__main__":
     main()

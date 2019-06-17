@@ -1,7 +1,7 @@
 
 # Fix false external accounts
 
-import gitlab
+from gitlab import Gitlab, config, exceptions
 
 
 class Ffe:
@@ -14,10 +14,10 @@ class Ffe:
         self.valid_tuhh_identity = ',ou=people,dc=tu-harburg,dc=de'
 
         try:
-            self.gl = gitlab.Gitlab(
+            self.gl = Gitlab(
                 self.gitlab_instance,
                 private_token=self.private_token)
-        except gitlab.config.GitlabConfigMissingError as err:
+        except config.GitlabConfigMissingError as err:
             print(err)
 
     def fetch_users(self):
@@ -28,7 +28,7 @@ class Ffe:
         try:
             user = self.gl.users.get(id)
             return user
-        except gitlab.exceptions.GitlabGetError as err:
+        except exceptions.GitlabGetError as err:
             print(err)
 
     def main(self):

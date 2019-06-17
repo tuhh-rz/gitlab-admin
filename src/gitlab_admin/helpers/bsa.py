@@ -6,13 +6,13 @@ import sys
 from email.message import EmailMessage
 from pathlib import Path
 
-import gitlab
+from gitlab import Gitlab, config, exceptions
 
 
 # Potentielle Spam Accounts ermitteln und blocken
 
 class Bsa:
-    def __init__(self, gitlab_instance=None, private_token=None, nocache=True, nono=False ):
+    def __init__(self, gitlab_instance=None, private_token=None, nocache=True, nono=False):
 
         signal.signal(signal.SIGINT, self.signal_handler)
 
@@ -33,13 +33,13 @@ class Bsa:
         self.spam_accounts = dict()
 
         try:
-            self.gl = gitlab.Gitlab(
+            self.gl = Gitlab(
                 self.gitlab_instance,
                 private_token=self.private_token)
-        except gitlab.config.GitlabConfigMissingError as err:
+        except config.GitlabConfigMissingError as err:
             print(err)
 
-    def signal_handler(self, sig, frame):
+    def signal_handler(self):
         print('You pressed Ctrl+C!')
 
         with open(self.path_whitelist, 'w+') as handle:
@@ -50,19 +50,26 @@ class Bsa:
 
         sys.exit(0)
 
-    def print_info(self, element):
+    @staticmethod
+    def print_info(element):
         # translator = Translator()
         # translation = translator.translate(element.bio, dest='de')
 
-        if element.name: print ('name: ' + element.name)
-        if element.bio: print ('bio: ' + element.bio)
+        if element.name:
+            print('name: ' + element.name)
+        if element.bio:
+            print('bio: ' + element.bio)
         # print(element.id)
-        if element.website_url: print('website_url: ' + element.website_url)
-        if element.web_url: print('web_url: ' + element.web_url)
-        if element.last_sign_in_at: print ('last_sign_in_at: ' + element.last_sign_in_at)
+        if element.website_url:
+            print('website_url: ' + element.website_url)
+        if element.web_url:
+            print('web_url: ' + element.web_url)
+        if element.last_sign_in_at:
+            print('last_sign_in_at: ' + element.last_sign_in_at)
         # print(translation.text)
 
-    def block_account(self, element):
+    @staticmethod
+    def block_account(element):
         element.block()
 
         msg = EmailMessage()
@@ -114,17 +121,29 @@ https://collaborating.tuhh.de/
         try:
             user = self.gl.users.get(id)
             return user
-        except gitlab.exceptions.GitlabGetError as err:
+        except exceptions.GitlabGetError as err:
             print(err)
+
+    def fire(self, element):
+        self.print_info(element)
+
+        block_account = input("Block/Nothing (b/n)? ")
+        if block_account == "b":
+            if not self.nono:
+                self.spam_accounts[element.id] = element.attributes
+                self.block_account(element)
+        elif input("Whitelist? (y/n)? ") == "y":
+            self.whitelist_member_ids.add(element.id)
+        print()
 
     def main(self):
         if self.nono:
             print('No changes will be made.')
 
-        print ("Reading group members …")
+        print("Reading group members …")
 
         if not self.nocache and Path(self.path_groups_member_ids).is_file():
-            print ("… using cache")
+            print("… using cache")
             with open(self.path_groups_member_ids) as handle:
                 groups_member_ids = json.loads(handle.read())
         else:
@@ -143,10 +162,10 @@ https://collaborating.tuhh.de/
             with open(self.path_groups_member_ids, 'w') as handle:
                 json.dump(list(groups_member_ids), handle)
 
-        print ("Reading project members …")
+        print("Reading project members …")
 
         if not self.nocache and Path(self.path_projects_member_ids).is_file():
-            print ("… using cache")
+            print("… using cache")
             with open(self.path_projects_member_ids) as handle:
                 projects_member_ids = json.loads(handle.read())
         else:
@@ -162,8 +181,6 @@ https://collaborating.tuhh.de/
             with open(self.path_projects_member_ids, 'w') as handle:
                 json.dump(list(projects_member_ids), handle)
 
-
-
         if Path(self.path_whitelist).is_file() and Path(self.path_spam).stat().st_size > 0:
             with open(self.path_whitelist, 'r') as handle:
                 self.whitelist_member_ids = set(json.loads(handle.read()))
@@ -176,49 +193,17 @@ https://collaborating.tuhh.de/
             if element.state == 'active' and not element.id in self.whitelist_member_ids and element.username != 'ghost' and element.external:
                 for k, v in self.spam_accounts.items():
                     if element.website_url != '' and v['website_url'].lower() == element.website_url.lower():
-                        print ('Cached SPAM URL: ' + element.website_url)
-                        self.print_info(element)
-
-                        block_account = input("Block/Nothing (b/n)? ")
-                        if block_account == "b":
-                            if not self.nono:
-                                self.block_account(element)
-                        print()
+                        print('Cached SPAM URL: ' + element.website_url)
+                        self.fire(element)
                     elif element.bio != '' and v['bio'] == element.bio:
-                        print ('Cached SPAM Bio: ' + element.bio)
-                        self.print_info(element)
-
-                        block_account = input("Block/Nothing (b/n)? ")
-                        if block_account == "b":
-                            if not self.nono:
-                                 self.block_account(element)
-                        elif input("Whitelist? (y/n)? ") == "y":
-                            self.whitelist_member_ids.add(element.id)
-                        print()
+                        print('Cached SPAM Bio: ' + element.bio)
+                        self.fire(element)
 
                 if element.website_url != '' and element.bio != '' and not element.id in projects_member_ids and not element.id in groups_member_ids:
-                    self.print_info(element)
+                    self.fire(element)
 
-                    block_account = input("Block/Nothing (b/n)? ")
-                    if block_account == "b":
-                        if not self.nono:
-                            self.spam_accounts[element.id] = element.attributes
-                            self.block_account(element)
-                    elif input("Whitelist? (y/n)? ") == "y":
-                        self.whitelist_member_ids.add(element.id)
-                    print()
-
-                elif element.website_url != '' and (not re.match( r'.*\s.*', element.name) or element.name.islower()):
-                    self.print_info(element)
-
-                    block_account = input("Block/Nothing (b/n)? ")
-                    if block_account == "b":
-                        if not self.nono:
-                            self.spam_accounts[element.id] = element.attributes
-                            self.block_account(element)
-                    elif input("Whitelist? (y/n)? ") == "y":
-                        self.whitelist_member_ids.add(element.id)
-                    print()
+                elif element.website_url != '' and (not re.match(r'.*\s.*', element.name) or element.name.islower()):
+                    self.fire(element)
 
         with open(self.path_whitelist, 'w+') as handle:
             json.dump(list(self.whitelist_member_ids), handle)

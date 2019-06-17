@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 
-import gitlab
+from gitlab import Gitlab, config, exceptions
 
 
 class Dua:
-    def __init__(self, gitlab_instance=None, private_token=None, nono=True, timedelta=None ):
+    def __init__(self, gitlab_instance=None, private_token=None, nono=True, timedelta=None):
 
         self.gitlab_instance = gitlab_instance
         self.private_token = private_token
@@ -12,10 +12,10 @@ class Dua:
         self.timedelta = timedelta
 
         try:
-            self.gl = gitlab.Gitlab(
+            self.gl = Gitlab(
                 self.gitlab_instance,
                 private_token=self.private_token)
-        except gitlab.config.GitlabConfigMissingError as err:
+        except config.GitlabConfigMissingError as err:
             print(err)
 
     def fetch_users(self):
@@ -26,7 +26,7 @@ class Dua:
         try:
             user = self.gl.users.get(id)
             return user
-        except gitlab.exceptions.GitlabGetError as err:
+        except exceptions.GitlabGetError as err:
             print(err)
 
     def main(self):

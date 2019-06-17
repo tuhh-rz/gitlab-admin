@@ -1,4 +1,4 @@
-import gitlab
+from gitlab import Gitlab, config, exceptions
 
 
 class Spl:
@@ -10,10 +10,10 @@ class Spl:
         self.limit = limit
 
         try:
-            self.gl = gitlab.Gitlab(
+            self.gl = Gitlab(
                 self.gitlab_instance,
                 private_token=self.private_token)
-        except gitlab.config.GitlabConfigMissingError as err:
+        except config.GitlabConfigMissingError as err:
             print(err)
 
     def fetch_users(self):
@@ -24,7 +24,7 @@ class Spl:
         try:
             user = self.gl.users.get(id)
             return user
-        except gitlab.exceptions.GitlabGetError as err:
+        except exceptions.GitlabGetError as err:
             print(err)
 
     def main(self):
@@ -37,7 +37,7 @@ class Spl:
                     # print (user.external)
                     # print (user.projects_limit)
                     print('{} {:>5} {} {}'.format('set project limit to ' + str(self.limit) +
-                                                  ' (currently ' + str(user.projects_limit) + ')', user.id, user.username, user.email))
+                        ' (currently ' + str(user.projects_limit) + ')', user.id, user.username, user.email))
 
                     if not self.nono:
                         user.projects_limit = self.limit
