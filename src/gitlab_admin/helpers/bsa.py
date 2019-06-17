@@ -191,19 +191,23 @@ https://collaborating.tuhh.de/
 
         for element in self.fetch_all():
             if element.state == 'active' and not element.id in self.whitelist_member_ids and element.username != 'ghost' and element.external:
+                was_cached = False
                 for k, v in self.spam_accounts.items():
                     if element.website_url != '' and v['website_url'].lower() == element.website_url.lower():
                         print('Cached SPAM URL: ' + element.website_url)
+                        was_cached=True
                         self.fire(element)
                     elif element.bio != '' and v['bio'] == element.bio:
                         print('Cached SPAM Bio: ' + element.bio)
+                        was_cached=True
                         self.fire(element)
 
-                if element.website_url != '' and element.bio != '' and not element.id in projects_member_ids and not element.id in groups_member_ids:
-                    self.fire(element)
+                if not was_cached:
+                    if element.website_url != '' and element.bio != '' and not element.id in projects_member_ids and not element.id in groups_member_ids:
+                        self.fire(element)
 
-                elif element.website_url != '' and (not re.match(r'.*\s.*', element.name) or element.name.islower()):
-                    self.fire(element)
+                    elif element.website_url != '' and (not re.match(r'.*\s.*', element.name) or element.name.islower()):
+                        self.fire(element)
 
         with open(self.path_whitelist, 'w+') as handle:
             json.dump(list(self.whitelist_member_ids), handle)
