@@ -35,3 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.6.0] - 2019-05-06
 ### Added
 - Subcommand `bsa` -> add --cron switch
+
+## [0.7.0] - 2019-06-17
+### Added
+- Subcommand `bsa` -> discard spam cache
