@@ -200,9 +200,11 @@ https://collaborating.tuhh.de/
                 was_cached = False
 
                 if not was_cached:
-                    if element.website_url != '' and element.bio != '' and element.id not in projects_member_ids and element.id not in groups_member_ids:
+                    if (element.website_url != '' or element.bio != '') and element.id not in projects_member_ids and element.id not in groups_member_ids:
+                        # Website oder Bio eingetragen und kein Mitglied in Gruppe und Projekt
                         self.fire(element)
-                    elif element.website_url != '' and (not re.match(r'.*\s.*', element.name) or element.name.islower()):
+                    elif (element.website_url != '' or element.bio != '') and (not re.match(r'.*\s.*', element.name) or element.name.islower()):
+                        # Website oder Bio eingetragen und Name komplett klein und ohne Leerzeichen
                         self.fire(element)
 
         with open(self.path_whitelist, 'w+') as handle:
