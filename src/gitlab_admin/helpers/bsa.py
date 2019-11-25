@@ -1,6 +1,5 @@
 import email.message
 import json
-import re
 import signal
 import smtplib
 import sys
@@ -203,18 +202,17 @@ https://collaborating.tuhh.de/
 
                     if (
                             element.website_url or element.bio) and element.id not in projects_member_ids and element.id not in groups_member_ids:
-                        print("1")
+                        print("Website oder Bio eingetragen und kein Mitglied in Gruppe und Projekt")
                         print("website_url " + str(element.website_url))
                         print("bio " + str(element.bio))
                         # Website oder Bio eingetragen und kein Mitglied in Gruppe und Projekt
                         self.fire(element)
-                    elif (element.website_url or element.bio) and (
-                            not re.match(r'.*\s.*', element.name) or element.name.islower()):
-                        print("2")
-                        print("website_url " + str(element.website_url))
-                        print("bio " + str(element.bio))
-                        # Website oder Bio eingetragen und Name komplett klein und ohne Leerzeichen
-                        self.fire(element)
+                    # elif (element.website_url or element.bio) and (not re.match(r'.*\s.*', element.name) or element.name.islower()):
+                    #     print("2")
+                    #     print("website_url " + str(element.website_url))
+                    #     print("bio " + str(element.bio))
+                    #     # Website oder Bio eingetragen und Name komplett klein und ohne Leerzeichen
+                    #     self.fire(element)
 
         with open(self.path_whitelist, 'w+') as handle:
             json.dump(list(self.whitelist_member_ids), handle)
