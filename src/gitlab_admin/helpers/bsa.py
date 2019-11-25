@@ -200,12 +200,15 @@ https://collaborating.tuhh.de/
                 was_cached = False
 
                 if not was_cached:
-                    print("website_url " + str(element.website_url))
-                    print("bio " + str(element.bio))
+
                     if (element.website_url != '' or element.bio != '') and element.id not in projects_member_ids and element.id not in groups_member_ids:
+                        print("website_url " + str(element.website_url))
+                        print("bio " + str(element.bio))
                         # Website oder Bio eingetragen und kein Mitglied in Gruppe und Projekt
                         self.fire(element)
                     elif (element.website_url != '' or element.bio != '') and (not re.match(r'.*\s.*', element.name) or element.name.islower()):
+                        print("website_url " + str(element.website_url))
+                        print("bio " + str(element.bio))
                         # Website oder Bio eingetragen und Name komplett klein und ohne Leerzeichen
                         self.fire(element)
 
