@@ -200,8 +200,8 @@ https://collaborating.tuhh.de/
                 was_cached = False
 
                 if not was_cached:
-                    print("website_url " + element.website_url)
-                    print("bio " + element.bio)
+                    print("website_url " + str(element.website_url))
+                    print("bio " + str(element.bio))
                     if (element.website_url != '' or element.bio != '') and element.id not in projects_member_ids and element.id not in groups_member_ids:
                         # Website oder Bio eingetragen und kein Mitglied in Gruppe und Projekt
                         self.fire(element)
