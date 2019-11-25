@@ -130,7 +130,6 @@ https://collaborating.tuhh.de/
     def fire(self, element):
         if self.cron:
             self.print_short_info(element)
-            self.print_info(element)
             block_account = "b"
         else:
             self.print_info(element)
