@@ -1,11 +1,12 @@
 import argparse
 
-from gitlab_admin import __version__
 from gitlab_admin.helpers.bsa import Bsa
+
+from gitlab_admin import __version__
 from gitlab_admin.helpers.dua import Dua
+from gitlab_admin.helpers.ffe import Ffe
 from gitlab_admin.helpers.gfe import Gfe
 from gitlab_admin.helpers.spl import Spl
-from gitlab_admin.helpers.ffe import Ffe
 
 
 def create_parser():
@@ -37,16 +38,6 @@ def create_parser():
     parser_dua.add_argument('-t', '--timedelta', type=int,
                             default=7, help='time delta')
     parser_dua.set_defaults(func=dua)
-
-    parser_sac = subparsers.add_parser(
-        'bsa', help="Block spam accounts")
-    parser_sac.add_argument('--nocache', action='store_true',
-                            help='Do not use cached files')
-    parser_sac.add_argument('--nono', action='store_true',
-                            help='Do not make any changes')
-    parser_sac.add_argument('--cron', action='store_true',
-                            help='Do not ask me')
-    parser_sac.set_defaults(func=bsa)
 
     parser_spl = subparsers.add_parser(
         'spl', help="Set the project limit of all accounts to a concrete value if the current value is smaller.")
