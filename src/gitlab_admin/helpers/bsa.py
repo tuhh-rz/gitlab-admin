@@ -79,15 +79,15 @@ class Bsa:
         # print(translation.text)
 
     @staticmethod
-    def block_account(element):
-        element.block()
+    def block_account(element, score_results):
+        # element.block()
 
         msg = email.message.EmailMessage()
         msg.set_content("""\
 Hallo """ + element.name + """,\
 
 
-ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als Spam eingestuft und aus diesem Grund blokiert.
+ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als verwaist eingestuft und aus diesem Grund blokiert.
 Wenn Sie der Meinung sind, dass das eine falsche Entscheidung war, dann setzen Sie sich bitte mit dem Servicedesk der TUHH in Verbindung.\
 
 
@@ -103,8 +103,10 @@ https://collaborating.tuhh.de/
 Hello """ + element.name + """,\
 
 
-Your TUHH GitLab account (https://collaborating.tuhh.de/) has been classified as spam and has been blocked for this reason.
+Your TUHH GitLab account (https://collaborating.tuhh.de/) has been classified as orphaned and has been blocked for this reason.
 If you think this was a wrong decision, please contact the TUHH Service Desk.\
+
+""" + score_results + """
 
 
 Sincerely yours,
@@ -116,15 +118,16 @@ https://collaborating.tuhh.de/
 """)
 
         msg['Subject'] = 'Ihr Account wurde blockiert / Your account has been blocked.'
-        msg['From'] = 'nobody@tuhh.de'
-        msg['To'] = element.email
+        msg['From'] = 'no-reply@tuhh.de'
+        # msg['To'] = element.email
+        msg['To'] = "andreas.boettger@tuhh.de"
 
-        try:
-            s = smtplib.SMTP('localhost')
-            s.send_message(msg)
-            s.quit()
-        except ConnectionRefusedError:
-            pass
+        # try:
+        s = smtplib.SMTP('localhost')
+        s.send_message(msg)
+        s.quit()
+        # except ConnectionRefusedError:
+        #     pass
 
     def fetch_all(self):
         users = self.gl.users.list(as_list=False)
@@ -137,7 +140,7 @@ https://collaborating.tuhh.de/
         except exceptions.GitlabGetError as err:
             print(err)
 
-    def fire(self, element):
+    def fire(self, element, score_results):
         if self.cron:
             self.print_info(element)
             block_account = "b"
@@ -147,12 +150,12 @@ https://collaborating.tuhh.de/
 
         if block_account == "b":
             if not self.nono:
-                self.block_account(element)
+                self.block_account(element, score_results)
         elif input("Whitelist? (y/n)? ") == "y":
             self.whitelist_member_ids.add(element.id)
         print()
 
-    def printFullInfo(self, element, projects_member_ids, groups_member_ids):
+    def print_full_info(self, element):
         print("location\t" + str(element.location))
         print("linkedin\t" + str(element.linkedin))
         print("twitter\t" + str(element.twitter))
@@ -184,11 +187,11 @@ https://collaborating.tuhh.de/
         print("public_email\t" + str(element.public_email))
         print("can_create_project\t" + str(element.can_create_project))
         print("state\t" + str(element.state))
-        if element.id in projects_member_ids:
+        if element.id in self.projects_member_ids:
             print("project member\t" + "True")
         else:
             print("project member\t" + "False")
-        if element.id in groups_member_ids:
+        if element.id in self.groups_member_ids:
             print("group member\t" + "True")
         else:
             print("group member\t" + "False")
@@ -265,89 +268,90 @@ https://collaborating.tuhh.de/
             {"yes": -15, "no": 0, "description": "Acitivity in the last " + str(self.deadline_days) + " day(s) ago?"})
 
         for element in self.fetch_all():
-            if element.id == 3234:
+            # if element.id == 3450:
                 score = 0
-                # if element.state == 'active' and element.username != 'ghost' and element.external:
+            score_results = ""
+            if element.state == 'active' and element.username != 'ghost' and element.external:
+                # if element.state == 'blocked' and element.username != 'ghost':
                 # if element.state == 'active' and element.username != 'ghost':
-                if element.username != 'ghost':
+                # if element.username != 'ghost':
                     # self.printFullInfo(element, projects_member_ids, groups_member_ids)
                     # score_def = "location"
                     # yes_or_no = "yes" if  str(element.location).lower() in self.trusted_countries else "no"
-                    # print(element.location)
-                    # print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                # score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
                     #     score_defs[score_def][yes_or_no]))
                     # score += score_defs[score_def][yes_or_no]
 
                     score_def = "projects_limit"
                     yes_or_no = "yes" if element.projects_limit > 0 else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "bio"
                     yes_or_no = "yes" if str(element.bio) == 'None' or str(element.bio) == '' else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "identities"
                     yes_or_no = "yes" if len(element.identities) > 0 else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "website_url"
                     yes_or_no = "yes" if str(element.website_url) == 'None' or str(element.website_url) == '' else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "email"
                     yes_or_no = "yes" if element.email.split('@')[1] in self.trusted_domains else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "private_profile"
                     yes_or_no = "yes" if element.private_profile else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "is_admin"
                     yes_or_no = "yes" if element.is_admin else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "can_create_group"
                     yes_or_no = "yes" if element.can_create_group else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "two_factor_enabled"
                     yes_or_no = "yes" if element.two_factor_enabled else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "can_create_project"
                     yes_or_no = "yes" if element.can_create_project else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "projects_member_ids"
                     yes_or_no = "yes" if element.id in projects_member_ids else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "groups_member_ids"
                     yes_or_no = "yes" if element.id in groups_member_ids else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
 
                     score_def = "last_activity_on"
@@ -355,31 +359,21 @@ https://collaborating.tuhh.de/
                     # print (self.deadline)
                     yes_or_no = "yes" if element.last_activity_on and self.deadline < datetime.strptime(
                         element.last_activity_on, '%Y-%m-%d') else "no"
-                    print(score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                        score_defs[score_def][yes_or_no]))
+                score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    score_defs[score_def][yes_or_no]) + "\n")
                     score += score_defs[score_def][yes_or_no]
+                score_results += ("Score: " + str(score) + " (needed > 0 to classify as unused or spam)\n")
 
-                    print("Score: " + str(score) + " (needed > 0 to classify as unused or spam)")
+                if score >= 0:
+                    print("================================================================================")
+                    print("Account:")
+                    print("================================================================================")
+                    print(element.id)
+                    print(element.name)
+                    print(element.email)
+                    print("\nResults:\n" + score_results)
 
-                # if (element.website_url or element.bio) and element.id not in projects_member_ids and element.id not in groups_member_ids:
-                # was_cached = False
-                #
-                # if not was_cached:
-                #
-                #     if (
-                #             element.website_url or element.bio) and element.id not in projects_member_ids and element.id not in groups_member_ids:
-                #         print("Website oder Bio eingetragen und kein Mitglied in Gruppe und Projekt")
-                #         print("website_url " + str(element.website_url))
-                #         print("bio " + str(element.bio))
-                #         print("external" + str(element.external))
-                        # Website oder Bio eingetragen und kein Mitglied in Gruppe und Projekt
-                # self.fire(element)
-                    # elif (element.website_url or element.bio) and (not re.match(r'.*\s.*', element.name) or element.name.islower()):
-                    #     print("2")
-                    #     print("website_url " + str(element.website_url))
-                    #     print("bio " + str(element.bio))
-                    #     # Website oder Bio eingetragen und Name komplett klein und ohne Leerzeichen
-                    #     self.fire(element)
+                    self.fire(element, score_results)
 
-        # with open(self.path_whitelist, 'w+') as handle:
-        #     json.dump(list(self.whitelist_member_ids), handle)
+        with open(self.path_whitelist, 'w+') as handle:
+            json.dump(list(self.whitelist_member_ids), handle)
