@@ -123,7 +123,7 @@ https://collaborating.tuhh.de/
         msg['To'] = "andreas.boettger@tuhh.de"
 
         # try:
-        s = smtplib.SMTP('localhost')
+        s = smtplib.SMTP('localmail')
         s.send_message(msg)
         s.quit()
         # except ConnectionRefusedError:
