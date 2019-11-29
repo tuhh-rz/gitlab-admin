@@ -120,7 +120,7 @@ https://collaborating.tuhh.de/
         msg['Subject'] = 'Ihr Account wurde blockiert / Your account has been blocked.'
         msg['From'] = 'noreply@tuhh.de'
         # msg['To'] = element.email
-        msg['To'] = "andreas.boettger@tuhh.de"
+        msg['To'] = "rzt+container@rz.tu-harburg.de"
 
         # try:
         s = smtplib.SMTP('localmail')
@@ -362,15 +362,16 @@ https://collaborating.tuhh.de/
                 score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
                     score_defs[score_def][yes_or_no]) + "\n")
                 score += score_defs[score_def][yes_or_no]
+                score_results += ("ID: " + element.id + "\n")
+                score_results += ("Name: " + element.name + "\n")
+                score_results += ("eMail: " + element.email + "\n")
+
                 score_results += ("Score: " + str(score) + " (needed > 0 to classify as unused or spam)\n")
 
                 if score >= 0:
                     print("================================================================================")
                     print("Account:")
                     print("================================================================================")
-                    print(element.id)
-                    print(element.name)
-                    print(element.email)
                     print("\nResults:\n" + score_results)
 
                     self.fire(element, score_results)
