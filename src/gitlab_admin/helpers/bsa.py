@@ -118,7 +118,7 @@ https://collaborating.tuhh.de/
 """)
 
         msg['Subject'] = 'Ihr Account wurde blockiert / Your account has been blocked.'
-        msg['From'] = 'no-reply@tuhh.de'
+        msg['From'] = 'noreply@tuhh.de'
         # msg['To'] = element.email
         msg['To'] = "andreas.boettger@tuhh.de"
 
