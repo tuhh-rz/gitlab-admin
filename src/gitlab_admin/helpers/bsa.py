@@ -124,7 +124,7 @@ https://collaborating.tuhh.de/
         msg['To'] = "andreas.boettger@tuhh.de"
 
         # try:
-        s = smtplib.SMTP('fizban.rz.tu-harburg.de')
+        s = smtplib.SMTP('localhost')
         s.send_message(msg)
         s.quit()
         # except ConnectionRefusedError:
