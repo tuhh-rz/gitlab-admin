@@ -27,6 +27,7 @@ class Bsa:
         self.nocache = nocache
         self.nono = nono
         self.cron = cron
+        self.threshold = 0
 
         self.trusted_domains = (
             "tuhh.de", "tu-harburg.de", "uni-hamburg.de", "hcu-hamburg.de", "hsu-hh.de", "haw-hamburg.de",
@@ -369,14 +370,14 @@ https://collaborating.tuhh.de/
                 score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
                     score_defs[score_def][yes_or_no]) + "\n")
                 score += score_defs[score_def][yes_or_no]
-                score_results += ("\nScore: " + str(score) + " (needed > 0 to classify as unused or spam)\n")
+                score_results += ("\nScore: " + str(
+                    score) + " (A value of > " + self.threshold + " is required to be classified as orphaned.)\n\n")
 
                 score_results += ("ID: " + str(element.id) + "\n")
                 score_results += ("Name: " + element.name + "\n")
                 score_results += ("eMail: " + element.email + "\n")
 
-
-                if score >= 0:
+                if score >= self.threshold:
                     print("================================================================================")
                     print("Account:")
                     print("================================================================================")
