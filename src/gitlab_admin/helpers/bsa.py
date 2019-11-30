@@ -369,11 +369,12 @@ https://collaborating.tuhh.de/
                 score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
                     score_defs[score_def][yes_or_no]) + "\n")
                 score += score_defs[score_def][yes_or_no]
+                score_results += ("\nScore: " + str(score) + " (needed > 0 to classify as unused or spam)\n")
+
                 score_results += ("ID: " + str(element.id) + "\n")
                 score_results += ("Name: " + element.name + "\n")
                 score_results += ("eMail: " + element.email + "\n")
 
-                score_results += ("Score: " + str(score) + " (needed > 0 to classify as unused or spam)\n")
 
                 if score >= 0:
                     print("================================================================================")
