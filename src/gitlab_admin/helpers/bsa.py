@@ -371,7 +371,8 @@ https://collaborating.tuhh.de/
                     score_defs[score_def][yes_or_no]) + "\n")
                 score += score_defs[score_def][yes_or_no]
                 score_results += ("\nScore: " + str(
-                    score) + " (A value of > " + self.threshold + " is required to be classified as orphaned.)\n\n")
+                    score) + " (A value of > " + str(
+                    self.threshold) + " is required to be classified as orphaned.)\n\n")
 
                 score_results += ("ID: " + str(element.id) + "\n")
                 score_results += ("Name: " + element.name + "\n")
