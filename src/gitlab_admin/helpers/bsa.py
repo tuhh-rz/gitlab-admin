@@ -121,11 +121,13 @@ https://www.tuhh.de/
 https://collaborating.tuhh.de/
 """)
 
-        msg['Subject'] = '[TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
-        msg['From'] = 'no-reply@tuhh.de'
+        # msg['Subject'] = '[TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
+        # msg['From'] = 'no-reply@tuhh.de'
         # msg['To'] = element.email
+
+        msg['Subject'] = '[BETA INFO][TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
+        msg['From'] = 'nonobody@tuhh.de'
         msg['To'] = "rzt+container@rz.tu-harburg.de"
-        # msg['To'] = "andreas.boettger@tuhh.de"
 
         # try:
         s = smtplib.SMTP('localhost')
