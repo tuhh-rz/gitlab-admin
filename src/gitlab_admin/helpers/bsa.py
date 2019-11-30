@@ -89,7 +89,7 @@ Hallo """ + element.name + """,\
 
 
 ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als verwaist eingestuft und aus diesem Grund blokiert.
-Wenn Sie der Meinung sind, dass das eine falsche Entscheidung ist, dann setzen Sie sich bitte mit dem Servicedesk der TUHH in Verbindung.\
+Wenn Sie der Meinung sind, dass das eine falsche Entscheidung ist, dann setzen Sie sich bitte mit dem Servicedesk des Rechenzentrums der TUHH in Verbindung.\
 
 
 """ + score_results + """
@@ -108,7 +108,7 @@ Hello """ + element.name + """,\
 
 
 Your TUHH GitLab account (https://collaborating.tuhh.de/) has been classified as orphaned and has been blocked for this reason.
-If you think that this is a wrong decision, please contact the TUHH Service Desk.\
+If you think this is a wrong decision, please contact the TUHH Data Center Service Desk.\
 
 
 """ + score_results + """
