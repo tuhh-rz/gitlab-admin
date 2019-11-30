@@ -378,7 +378,7 @@ https://collaborating.tuhh.de/
                 score_results += ("Name: " + element.name + "\n")
                 score_results += ("eMail: " + element.email + "\n")
 
-                if score >= self.threshold:
+                if score > self.threshold:
                     print("================================================================================")
                     print("Account:")
                     print("================================================================================")
