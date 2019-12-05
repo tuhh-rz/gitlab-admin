@@ -19,9 +19,9 @@ cache:
     - venv/
 
 before_script:
+  - python -V
   - pip install pipenv
   - pipenv update
-  - python -V               # Print out python version for debugging
 
 test:
   script:
