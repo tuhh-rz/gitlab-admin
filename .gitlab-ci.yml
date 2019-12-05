@@ -20,7 +20,7 @@ cache:
 
 before_script:
   - python -V
-  - apt-get update -y && apt-gey install -v libldap2-dev libsasl2-dev
+  - apt-get update -y && apt-get install -y libldap2-dev libsasl2-dev
   - pip install python-ldap
   # - pip install pipenv
   # - pipenv update
