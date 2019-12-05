@@ -2,11 +2,11 @@ import argparse
 
 from gitlab_admin import __version__
 from gitlab_admin.helpers.bsa import Bsa
+from gitlab_admin.helpers.cla import Cla
 from gitlab_admin.helpers.dua import Dua
+from gitlab_admin.helpers.ffe import Ffe
 from gitlab_admin.helpers.gfe import Gfe
 from gitlab_admin.helpers.spl import Spl
-from gitlab_admin.helpers.ffe import Ffe
-from gitlab_admin.helpers.cla import Cla
 
 
 def create_parser():
@@ -15,7 +15,8 @@ def create_parser():
     parser.add_argument(
         "gitlab_instance", help="URL of your GitLab instance, e.g. https://gitlab.com/")
     parser.add_argument(
-        "private_token", help="Access token for the API. You can generate one at Profile -> Settings")
+        "-f", "--tokenfile", type=str,
+        help="A file with the access token for the API. You can generate one at Profile -> Settings", required=False)
     parser.add_argument("--version", action='version',
                         help='Print the version of this program.', version='%(prog)s {}'.format(__version__))
 
@@ -67,31 +68,32 @@ def create_parser():
 
 
 def gfe(args):
-    gfe = Gfe(args.gitlab_instance, args.private_token)
+    gfe = Gfe(args.gitlab_instance, args.tokenfile)
     gfe.main()
 
 
 def ffe(args):
-    ffe = Ffe(args.gitlab_instance, args.private_token, args.nono)
+    ffe = Ffe(args.gitlab_instance, args.tokenfile, args.nono)
     ffe.main()
 
 
 def bsa(args):
-    bsa = Bsa(args.gitlab_instance, args.private_token, args.nocache, args.nono, args.cron)
+    bsa = Bsa(args.gitlab_instance, args.tokenfile, args.nocache, args.nono, args.cron)
     bsa.main()
 
+
 def cla(args):
-    cla = Cla(args.gitlab_instance, args.private_token, args.cron)
+    cla = Cla(args.gitlab_instance, args.tokenfile, args.cron)
     cla.main()
 
 
 def dua(args):
-    dua = Dua(args.gitlab_instance, args.private_tpyoken, args.nono, args.timedelta)
+    dua = Dua(args.gitlab_instance, args.tokenfile, args.nono, args.timedelta)
     dua.main()
 
 
 def spl(args):
-    spl = Spl(args.gitlab_instance, args.private_token, args.nono, args.limit)
+    spl = Spl(args.gitlab_instance, args.tokenfile, args.nono, args.limit)
     spl.main()
 
 

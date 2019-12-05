@@ -1,32 +1,23 @@
 from datetime import datetime, timedelta
 
-from gitlab import Gitlab, config, exceptions
+from gitlab import Gitlab, config
+
+from gitlab_admin import getallusers, gettoken
 
 
 class Dua:
-    def __init__(self, gitlab_instance=None, private_token=None, nono=True, timedelta=None):
+    def __init__(self, gitlab_instance=None, token_file=None, nono=True, timedelta=None):
 
-        self.gitlab_instance = gitlab_instance
-        self.private_token = private_token
         self.nono = nono
         self.timedelta = timedelta
 
+        private_token = gettoken(token_file)
+
         try:
             self.gl = Gitlab(
-                self.gitlab_instance,
-                private_token=self.private_token)
+                gitlab_instance,
+                private_token)
         except config.GitlabConfigMissingError as err:
-            print(err)
-
-    def fetch_users(self):
-        users = self.gl.users.list(as_list=False)
-        return users
-
-    def fetch_user(self, id):
-        try:
-            user = self.gl.users.get(id)
-            return user
-        except exceptions.GitlabGetError as err:
             print(err)
 
     def main(self):
@@ -36,7 +27,7 @@ class Dua:
         deadline = datetime.today() - timedelta(days=self.timedelta)
         # print(deadline)
 
-        for user in self.fetch_users():
+        for user in getallusers(self.gl):
             if str(user.confirmed_at) == 'None' and user.username != 'ghost':
                 # print(user.created_at)
                 # print(datetime.strptime(user.created_at, '%Y-%m-%dT%H:%M:%S.%fZ'))

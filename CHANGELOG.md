@@ -43,3 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.1] - 2019-11-25
 ### Fixed
 - Subcommand `bsa` -> stronger spam rules
+
+## [0.8.0] - 2019-12-05
+### Fixed
+- Subcommand `cla` -> check ldap accounts

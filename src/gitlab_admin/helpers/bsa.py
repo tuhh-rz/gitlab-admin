@@ -6,14 +6,18 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from gitlab import Gitlab, config, exceptions
+from gitlab import Gitlab, config
+
+import gitlab_admin
 
 
-# Potentielle Spam Accounts ermitteln und blocken
+# Potentielle Spam Accounts ermitteln
 
 class Bsa:
-    def __init__(self, gitlab_instance=None, private_token=None, nocache=True, nono=False, cron=False):
+    def __init__(self, gitlab_instance=None, token_file=None, nocache=True, nono=False, cron=False):
 
+        self.projects_member_ids = set()
+        self.groups_member_ids = set()
         signal.signal(signal.SIGINT, self.signal_handler)
 
         self.path_whitelist = str(Path.home()) + '/.gitlab_admin/cache/whitelist.json'
@@ -23,7 +27,6 @@ class Bsa:
         Path(str(Path.home()) + '/.gitlab_admin/cache').mkdir(parents=True, exist_ok=True)
 
         self.gitlab_instance = gitlab_instance
-        self.private_token = private_token
         self.nocache = nocache
         self.nono = nono
         self.cron = cron
@@ -33,18 +36,19 @@ class Bsa:
             "tuhh.de", "tu-harburg.de", "uni-hamburg.de", "hcu-hamburg.de", "hsu-hh.de", "haw-hamburg.de",
             "hfbk-hamburg.de")
 
-        self.trusted_countries = ("germany")
+        self.trusted_countries = "germany"
 
         self.deadline_days = 10
         self.deadline = datetime.today() - timedelta(self.deadline_days)
 
-
         self.whitelist_member_ids = set()
+
+        private_token = gitlab_admin.gettoken(token_file)
 
         try:
             self.gl = Gitlab(
                 self.gitlab_instance,
-                private_token=self.private_token)
+                private_token)
         except config.GitlabConfigMissingError as err:
             print(err)
 
@@ -137,17 +141,6 @@ https://collaborating.tuhh.de/
         # except ConnectionRefusedError:
         #     pass
 
-    def fetch_all(self):
-        users = self.gl.users.list(as_list=False)
-        return users
-
-    def fetch(self, user_id):
-        try:
-            user = self.gl.users.get(user_id)
-            return user
-        except exceptions.GitlabGetError as err:
-            print(err)
-
     def fire(self, element, score_results):
         if self.cron:
             self.print_info(element)
@@ -221,16 +214,16 @@ https://collaborating.tuhh.de/
             # Mir ist es egal, in welcher Gruppe ein User ist.
             # Deshalb interessiert mich nur, wer Mitglied in einer Gruppe ist
             groups = self.gl.groups.list(as_list=False)
-            groups_member_ids = set()
+
             for group in groups:
                 try:
                     group_members = group.members.list(as_list=False)
                     for group_member in group_members:
-                        groups_member_ids.add(group_member.id)
+                        self.groups_member_ids.add(group_member.id)
                 except Exception:
                     pass
             with open(self.path_groups_member_ids, 'w') as handle:
-                json.dump(list(groups_member_ids), handle)
+                json.dump(list(self.groups_member_ids), handle)
 
         if not self.cron:
             print("Reading project members …")
@@ -239,20 +232,20 @@ https://collaborating.tuhh.de/
             if not self.cron:
                 print("… using cache")
             with open(self.path_projects_member_ids) as handle:
-                projects_member_ids = json.loads(handle.read())
+                self.projects_member_ids = json.loads(handle.read())
         else:
             projects = self.gl.projects.list(as_list=False)
-            projects_member_ids = set()
+
             for project in projects:
                 try:
                     project_members = project.members.list(as_list=False)
 
                     for project_member in project_members:
-                        projects_member_ids.add(project_member.id)
+                        self.projects_member_ids.add(project_member.id)
                 except Exception:
                     pass
             with open(self.path_projects_member_ids, 'w') as handle:
-                json.dump(list(projects_member_ids), handle)
+                json.dump(list(self.projects_member_ids), handle)
 
         if Path(self.path_whitelist).is_file() and Path(self.path_whitelist).stat().st_size > 0:
             with open(self.path_whitelist, 'r') as handle:
@@ -275,7 +268,7 @@ https://collaborating.tuhh.de/
         score_defs["last_activity_on"] = (
             {"yes": -15, "no": 0, "description": "Acitivity in the last " + str(self.deadline_days) + " day(s) ago?"})
 
-        for element in self.fetch_all():
+        for element in gitlab_admin.getallusers(self.gl):
             # if element.id == 3450:
             score = 0
             score_results = ""
@@ -283,12 +276,12 @@ https://collaborating.tuhh.de/
                 # if element.state == 'blocked' and element.username != 'ghost':
                 # if element.state == 'active' and element.username != 'ghost':
                 # if element.username != 'ghost':
-                    # self.printFullInfo(element, projects_member_ids, groups_member_ids)
-                    # score_def = "location"
-                    # yes_or_no = "yes" if  str(element.location).lower() in self.trusted_countries else "no"
+                # self.printFullInfo(element, projects_member_ids, groups_member_ids)
+                # score_def = "location"
+                # yes_or_no = "yes" if  str(element.location).lower() in self.trusted_countries else "no"
                 # score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                    #     score_defs[score_def][yes_or_no]))
-                    # score += score_defs[score_def][yes_or_no]
+                #     score_defs[score_def][yes_or_no]))
+                # score += score_defs[score_def][yes_or_no]
 
                 score_def = "projects_limit"
                 yes_or_no = "yes" if element.projects_limit > 0 else "no"
@@ -351,7 +344,7 @@ https://collaborating.tuhh.de/
                 score += score_defs[score_def][yes_or_no]
 
                 score_def = "projects_member_ids"
-                yes_or_no = "yes" if element.id in projects_member_ids else "no"
+                yes_or_no = "yes" if element.id in self.projects_member_ids else "no"
                 score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
                     score_defs[score_def][yes_or_no]) + "\n")
                 score += score_defs[score_def][yes_or_no]
