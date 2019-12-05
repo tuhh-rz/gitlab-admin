@@ -18,4 +18,4 @@ pylint = "*"
 python-ldap = "*"
 
 [requires]
-python_version = "3.5.2"
+python_version = ">=3.5"
