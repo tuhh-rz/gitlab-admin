@@ -20,9 +20,9 @@ cache:
 
 before_script:
   - python -V
-  - apt-get update -y && apt-get install -y libldap2-dev
-  - pip install pipenv
-  - pipenv update
+  - apt-get update -y && apt-get install -y python-ldap
+  # - pip install pipenv
+  # - pipenv update
 
 test:
   script:
