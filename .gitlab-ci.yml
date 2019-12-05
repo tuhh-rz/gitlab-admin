@@ -19,13 +19,12 @@ cache:
     - venv/
 
 before_script:
+  - pip install pipenv
+  - pipenv update
   - python -V               # Print out python version for debugging
-  #- pip install virtualenv
-  #- virtualenv venv
-  #- source venv/bin/activate
 
 test:
   script:
   - python setup.py test
-  - python  setup.py install
+  - python setup.py install
   - python -m unittest tests/test_*
