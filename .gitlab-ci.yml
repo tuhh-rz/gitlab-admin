@@ -20,13 +20,13 @@ cache:
 
 before_script:
   - python -V
-  - apt-get update -y && apt-get install -y libldap2-dev libsasl2-dev
-  - pip install pipenv
-  - pipenv update
+  - pip install python-ldap
+  # - pip install pipenv
+  # - pipenv update
 
 test:
   script:
-  - pipenv shell
+  # - pipenv shell
   - python setup.py test
   - python setup.py install
   - python -m unittest tests/test_*
