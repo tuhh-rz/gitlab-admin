@@ -6,6 +6,7 @@ from gitlab_admin.helpers.dua import Dua
 from gitlab_admin.helpers.gfe import Gfe
 from gitlab_admin.helpers.spl import Spl
 from gitlab_admin.helpers.ffe import Ffe
+from gitlab_admin.helpers.cla import Cla
 
 
 def create_parser():
@@ -48,6 +49,12 @@ def create_parser():
                             help='Do not ask me')
     parser_sac.set_defaults(func=bsa)
 
+    parser_cla = subparsers.add_parser(
+        'cla', help="Check LDAP accounts")
+    parser_cla.add_argument('--cron', action='store_true',
+                            help='Do not ask me')
+    parser_cla.set_defaults(func=cla)
+
     parser_spl = subparsers.add_parser(
         'spl', help="Set the project limit of all accounts to a concrete value if the current value is smaller.")
     parser_spl.add_argument('--nono', action='store_true',
@@ -73,9 +80,13 @@ def bsa(args):
     bsa = Bsa(args.gitlab_instance, args.private_token, args.nocache, args.nono, args.cron)
     bsa.main()
 
+def cla(args):
+    cla = Cla(args.gitlab_instance, args.private_token, args.cron)
+    cla.main()
+
 
 def dua(args):
-    dua = Dua(args.gitlab_instance, args.private_token, args.nono, args.timedelta)
+    dua = Dua(args.gitlab_instance, args.private_tpyoken, args.nono, args.timedelta)
     dua.main()
 
 

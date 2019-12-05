@@ -15,6 +15,7 @@ pathlib = "*"
 simplejson = "*"
 gitlab-admin = {editable = true,path = "."}
 pylint = "*"
+python-ldap = "*"
 
 [requires]
 python_version = "3.5.2"
