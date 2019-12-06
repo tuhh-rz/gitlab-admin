@@ -28,10 +28,11 @@ class Dua:
         # print(deadline)
 
         for user in gitlab_admin.getallusers(self.gl):
-            if not user.confirmed_at and user.username != 'ghost':
+            if not user.confirmed_at and user.external and user.username != 'ghost':
                 if deadline > datetime.strptime(user.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%f'):
-                    print('{} {:24} {:24} {:>5} {} {}'.format('delete account', str(
-                        user.created_at), str(user.confirmed_at), user.id, user.username, user.email))
+                    print('{} {:24} {:>5} {} {}'.format('delete account', str(
+                        datetime.strptime(user.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%f')), user.id,
+                                                        user.username, user.email))
 
                     if not self.nono:
                         user.delete()
