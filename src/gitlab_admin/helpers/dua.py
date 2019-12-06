@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from gitlab import Gitlab, config
 
-from gitlab_admin import getallusers, gettoken
+import gitlab_admin
 
 
 class Dua:
@@ -11,7 +11,7 @@ class Dua:
         self.nono = nono
         self.timedelta = timedelta
 
-        private_token = gettoken(token_file)
+        private_token = gitlab_admin.gettoken(token_file)
 
         try:
             self.gl = Gitlab(
@@ -27,13 +27,8 @@ class Dua:
         deadline = datetime.today() - timedelta(days=self.timedelta)
         # print(deadline)
 
-        for user in getallusers(self.gl):
-            if str(user.confirmed_at) == 'None' and user.username != 'ghost':
-                # print(user.created_at)
-                # print(datetime.strptime(user.created_at, '%Y-%m-%dT%H:%M:%S.%fZ'))
-                # print(type(deadline))
-                # print(type(user.created_at))
-
+        for user in gitlab_admin.getallusers(self.gl):
+            if not user.confirmed_at and user.username != 'ghost':
                 if deadline > datetime.strptime(user.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%f'):
                     print('{} {:24} {:24} {:>5} {} {}'.format('delete account', str(
                         user.created_at), str(user.confirmed_at), user.id, user.username, user.email))
