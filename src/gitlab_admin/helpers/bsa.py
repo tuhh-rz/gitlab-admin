@@ -208,7 +208,7 @@ https://collaborating.tuhh.de/
             if not self.cron:
                 print("… using cache")
             with open(self.path_groups_member_ids) as handle:
-                groups_member_ids = json.loads(handle.read())
+                self.groups_member_ids = json.loads(handle.read())
         else:
             # Auch Subgroups erscheinen hier
             # Mir ist es egal, in welcher Gruppe ein User ist.
@@ -350,7 +350,7 @@ https://collaborating.tuhh.de/
                 score += score_defs[score_def][yes_or_no]
 
                 score_def = "groups_member_ids"
-                yes_or_no = "yes" if element.id in groups_member_ids else "no"
+                yes_or_no = "yes" if element.id in self.groups_member_ids else "no"
                 score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
                     score_defs[score_def][yes_or_no]) + "\n")
                 score += score_defs[score_def][yes_or_no]
