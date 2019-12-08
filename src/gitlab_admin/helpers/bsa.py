@@ -377,6 +377,7 @@ https://collaborating.tuhh.de/
                 score_results += ("ID: " + str(element.id) + "\n")
                 score_results += ("Name: " + element.name + "\n")
                 score_results += ("eMail: " + element.email + "\n")
+                score_results += ("URL: " + element.website_url + "\n")
 
                 if score > self.threshold:
                     print("================================================================================")
