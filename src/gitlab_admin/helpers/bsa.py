@@ -91,9 +91,17 @@ class Bsa:
         msg.set_content("""\
 Hallo """ + element.name + """,\
 
+BETA!!!!
+NICHTS WIRD BLOCKIERT UND DIE EMAIL GEHT NUR AN rzt+container@rz.tu-harburg.de
+MOMENTAN MUSS NOCH VON HAND NACHGEPRUEFT UND BLOCKIERT WERDEN.
+ 
 
-ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als verwaist eingestuft und aus diesem Grund blokiert.
-Wenn Sie der Meinung sind, dass das eine falsche Entscheidung ist, dann setzen Sie sich bitte mit dem Servicedesk des Rechenzentrums der TUHH in Verbindung.\
+ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als verwaist eingestuft und aus diesem Grund
+blokiert.
+Wenn Sie der Meinung sind, dass das eine falsche Entscheidung ist, dann setzen Sie sich bitte mit dem Servicedesk
+des Rechenzentrums der TUHH in Verbindung. Die Kontaktdaten finden Sie auf der Seite der TUHH (https://www.tuhh.de/).
+Alternativ können sie sich auch an einen Mitarbeiter oder eine Mitarbeiterin der Projekte wenden, in denen sie
+mitarbeiten.\
 
 
 """ + score_results + """
