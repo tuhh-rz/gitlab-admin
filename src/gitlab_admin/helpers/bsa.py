@@ -96,12 +96,10 @@ NICHTS WIRD BLOCKIERT UND DIE EMAIL GEHT NUR AN rzt+container@rz.tu-harburg.de
 MOMENTAN MUSS NOCH VON HAND NACHGEPRUEFT UND BLOCKIERT WERDEN.
  
 
-ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als verwaist eingestuft und aus diesem Grund
-blokiert.
-Wenn Sie der Meinung sind, dass das eine falsche Entscheidung ist, dann setzen Sie sich bitte mit dem Servicedesk
-des Rechenzentrums der TUHH in Verbindung. Die Kontaktdaten finden Sie auf der Seite der TUHH (https://www.tuhh.de/).
-Alternativ können sie sich auch an einen Mitarbeiter oder eine Mitarbeiterin der Projekte wenden, in denen sie
-mitarbeiten.\
+Ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als verwaist eingestuft und aus diesem Grund
+blockiert.
+Wenn Sie der Meinung sind, dass das eine falsche Entscheidung ist, dann setzen Sie sich bitte mit dem Servicedesk des Rechenzentrums der TUHH in Verbindung. Die Kontaktdaten finden Sie auf der Seite der TUHH (https://www.tuhh.de/).
+Alternativ können sie sich auch an einen Mitarbeiter oder eine Mitarbeiterin der Projekte wenden, in denen sie mitarbeiten.
 
 
 """ + score_results + """
@@ -119,8 +117,9 @@ https://collaborating.tuhh.de/
 Hello """ + element.name + """,\
 
 
-Your TUHH GitLab account (https://collaborating.tuhh.de/) has been classified as orphaned and has been blocked for this reason.
-If you think this is a wrong decision, please contact the TUHH Data Center Service Desk.\
+Your GitLab account at TUHH (https://collaborating.tuhh.de/) has been blocked due to orphan status.
+If you think this is a wrong decision, please contact the TUHH Data Center Service Desk. The contact details can be found on the TUHH website (https://www.tuhh.de/).
+Alternatively, you can also contact a member of staff of the projects in which you are involved.
 
 
 """ + score_results + """
