@@ -3,7 +3,14 @@ import getpass
 from gitlab import exceptions
 
 name = "gitlab-admin"  # type: str
-__version__ = '0.8.1'
+__version__ = '0.9.0'
+
+trusted_domains = (
+    "tuhh.de", "tu-harburg.de", "uni-hamburg.de", "hcu-hamburg.de", "hsu-hh.de", "haw-hamburg.de", "tum.de",
+    "hfbk-hamburg.de", "stifterverband.de", "uni-rostock.de", "mmkh.de", "uni-muenster.de", "ph-ludwigsburg.de",
+    "fu-berlin.de", "bsb.hamburg.de", "hs-magdeburg.de", "fau.de", "ku.de", "h-ab.de", "th-ab.de", "hs-augsburg.de",
+    "digll-hessen.de", "fh-swf.de",
+    "uke.de", "umsicht.fraunhofer.de")
 
 
 def gettoken(tokenfile=None):

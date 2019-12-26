@@ -32,10 +32,6 @@ class Bsa:
         self.cron = cron
         self.threshold = 0
 
-        self.trusted_domains = (
-            "tuhh.de", "tu-harburg.de", "uni-hamburg.de", "hcu-hamburg.de", "hsu-hh.de", "haw-hamburg.de",
-            "hfbk-hamburg.de")
-
         self.trusted_countries = "germany"
 
         self.deadline_days = 10
@@ -315,7 +311,7 @@ https://collaborating.tuhh.de/
                 score += score_defs[score_def][yes_or_no]
 
                 score_def = "email"
-                yes_or_no = "yes" if element.email.split('@')[1] in self.trusted_domains else "no"
+                yes_or_no = "yes" if element.email.split('@')[1] in gitlab_admin.trusted_domains else "no"
                 score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
                     score_defs[score_def][yes_or_no]) + "\n")
                 score += score_defs[score_def][yes_or_no]

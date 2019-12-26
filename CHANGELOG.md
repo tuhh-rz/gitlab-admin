@@ -47,3 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.8.0] - 2019-12-05
 ### Fixed
 - Subcommand `cla` -> check ldap accounts
+
+## [0.9.0] - 2019-12-26
+### Fixed
+- Subcommand `dba` -> delete blocked accounts

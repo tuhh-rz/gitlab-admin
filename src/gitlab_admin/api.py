@@ -3,6 +3,7 @@ import argparse
 from gitlab_admin import __version__
 from gitlab_admin.helpers.bsa import Bsa
 from gitlab_admin.helpers.cla import Cla
+from gitlab_admin.helpers.dba import Dba
 from gitlab_admin.helpers.dua import Dua
 from gitlab_admin.helpers.ffe import Ffe
 from gitlab_admin.helpers.gfe import Gfe
@@ -31,6 +32,14 @@ def create_parser():
     parser_ffe.add_argument('--nono', action='store_true',
                             help='Do not make any changes')
     parser_ffe.set_defaults(func=ffe)
+
+    parser_dba = subparsers.add_parser(
+        'dba', help="Delete blocked accounts")
+    parser_dba.add_argument('--nono', action='store_true',
+                            help='Do not make any changes')
+    parser_dba.add_argument('-t', '--timedelta', type=int,
+                            default=30, help='time delta')
+    parser_dba.set_defaults(func=dba)
 
     parser_dua = subparsers.add_parser(
         'dua', help="Delete unconfirmed accounts")
@@ -86,22 +95,23 @@ def cla(args):
     cla = Cla(args.gitlab_instance, args.tokenfile, args.cron)
     cla.main()
 
-
 def dua(args):
     dua = Dua(args.gitlab_instance, args.tokenfile, args.nono, args.timedelta)
     dua.main()
 
 
+def dba(args):
+    dba = Dba(args.gitlab_instance, args.tokenfile, args.nono, args.timedelta)
+    dba.main()
+
 def spl(args):
     spl = Spl(args.gitlab_instance, args.tokenfile, args.nono, args.limit)
     spl.main()
-
 
 def main():
     parser = create_parser()
     args = parser.parse_args()
     args.func(args)
-
 
 if __name__ == "__main__":
     main()
