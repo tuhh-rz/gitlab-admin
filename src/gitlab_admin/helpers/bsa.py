@@ -14,7 +14,7 @@ import gitlab_admin
 # Potentielle Spam Accounts ermitteln
 
 class Bsa:
-    def __init__(self, gitlab_instance=None, token_file=None, nocache=True, nono=False, cron=False):
+    def __init__(self, gitlab_instance=None, token_file=None, nocache=True, nono=True, cron=False):
 
         self.projects_member_ids = set()
         self.groups_member_ids = set()

@@ -60,9 +60,11 @@ def create_parser():
     parser_sac.set_defaults(func=bsa)
 
     parser_cla = subparsers.add_parser(
-        'cla', help="Check LDAP accounts")
+        'cla', help="Delete (clear) unknown LDAP accounts")
+    parser_cla.add_argument('--nono', action='store_true',
+                            help='Do not make any changes')
     parser_cla.add_argument('--cron', action='store_true',
-                            help='Do not ask me')
+                            help='Do not show messages')
     parser_cla.set_defaults(func=cla)
 
     parser_spl = subparsers.add_parser(
@@ -92,7 +94,7 @@ def bsa(args):
 
 
 def cla(args):
-    cla = Cla(args.gitlab_instance, args.tokenfile, args.cron)
+    cla = Cla(args.gitlab_instance, args.tokenfile, args.nono, args.cron)
     cla.main()
 
 def dua(args):

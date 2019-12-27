@@ -5,9 +5,10 @@ import gitlab_admin
 
 
 class Cla:
-    def __init__(self, gitlab_instance=None, token_file=None, cron=False):
+    def __init__(self, gitlab_instance=None, token_file=None, nono=True, cron=False):
 
         self.gitlab_instance = gitlab_instance
+        self.nono = nono
         self.cron = cron
 
         private_token = gitlab_admin.gettoken(token_file)
@@ -20,6 +21,8 @@ class Cla:
             print(err)
 
     def main(self):
+        if self.nono:
+            print('No changes will be made.')
         tuhh_ldap = ldap.initialize('ldaps://ldap.rz.tu-harburg.de')
 
         for element in gitlab_admin.getallusers(self.gl):
@@ -36,4 +39,8 @@ class Cla:
                             print("ldap.FILTER_ERROR for %s" % identity)
                         else:
                             if len(result) <= 0:
-                                print(identity)
+                                if not self.cron:
+                                    print(identity)
+                                    print(element.web_url)
+                                if not self.nono:
+                                    element.delete()
