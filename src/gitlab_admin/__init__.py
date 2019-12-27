@@ -10,7 +10,7 @@ trusted_domains = (
     "hfbk-hamburg.de", "stifterverband.de", "uni-rostock.de", "mmkh.de", "uni-muenster.de", "ph-ludwigsburg.de",
     "fu-berlin.de", "bsb.hamburg.de", "hs-magdeburg.de", "fau.de", "ku.de", "h-ab.de", "th-ab.de", "hs-augsburg.de",
     "digll-hessen.de", "fh-swf.de",
-    "uke.de", "umsicht.fraunhofer.de")
+    "uke.de", "umsicht.fraunhofer.de", " bsb.hamburg.de", "digll-hessen.de")
 
 
 def gettoken(tokenfile=None):
