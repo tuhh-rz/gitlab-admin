@@ -81,16 +81,12 @@ class Bsa:
 
     @staticmethod
     def block_account(element, score_results):
-        # element.block()
+        element.block()
 
         msg = email.message.EmailMessage()
         msg.set_content("""\
 Hallo """ + element.name + """,\
 
-BETA!!!!
-NICHTS WIRD BLOCKIERT UND DIE EMAIL GEHT NUR AN rzt+container@rz.tu-harburg.de
-MOMENTAN MUSS NOCH VON HAND NACHGEPRUEFT UND BLOCKIERT WERDEN.
- 
 
 Ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als verwaist eingestuft und aus diesem Grund
 blockiert.
@@ -101,7 +97,7 @@ Alternativ können sie sich auch an einen Mitarbeiter oder eine Mitarbeiterin de
 """ + score_results + """
 
 
-Mit freundlichen Grüßem,
+Mit freundlichen Grüßen,
 Ihr GitLab Administrator
 
 
@@ -129,13 +125,13 @@ https://www.tuhh.de/
 https://collaborating.tuhh.de/
 """)
 
-        # msg['Subject'] = '[TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
-        # msg['From'] = 'no-reply@tuhh.de'
-        # msg['To'] = element.email
-
-        msg['Subject'] = '[BETA INFO][TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
+        msg['Subject'] = '[TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
         msg['From'] = 'nobody@tuhh.de'
-        msg['To'] = "rzt+container@rz.tu-harburg.de"
+        msg['To'] = element.email
+
+        # msg['Subject'] = '[BETA INFO][TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
+        # msg['From'] = 'nobody@tuhh.de'
+        # msg['To'] = "rzt+container@rz.tu-harburg.de"
 
         # try:
         s = smtplib.SMTP('localhost')
