@@ -18,12 +18,12 @@ cache:
     - .cache/pip
     - venv/
 
-before_script:
-  - python -V
-  - apt-get update -y && apt-get install -y libldap2-dev libsasl2-dev
-  - pip install python-ldap
-  # - pip install pipenv
-  # - pipenv update
+# before_script:
+#   - python -V
+#   - apt-get update -y && apt-get install -y libldap2-dev libsasl2-dev
+#   - pip install python-ldap
+#   # - pip install pipenv
+#   # - pipenv update
 
 # test:
 #   script:
