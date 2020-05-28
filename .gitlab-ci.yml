@@ -25,7 +25,7 @@ before_script:
   # - pip install pipenv
   # - pipenv update
 
-test:
+.test:
   script:
   # - pipenv shell
   - python setup.py test
