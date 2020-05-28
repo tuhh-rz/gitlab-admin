@@ -81,7 +81,11 @@ class Bsa:
 
     @staticmethod
     def block_account(element, score_results):
-        element.block()
+        try:
+            element.block()
+        except config.exceptions.GitlabBlockError as err:
+            print(element)
+            print(err)
 
         msg = email.message.EmailMessage()
         msg.set_content("""\

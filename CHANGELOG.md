@@ -55,3 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.10.0] - 2019-12-27
 ### Improved
 - Subcommand `cla` -> delete unknown accounts
+
+## [0.10.1] - 2020-05-28
+### Improved
+- Subcommand `bsa` -> Catch exception
+  - gitlab.exceptions.GitlabBlockError: 500: Notification email can't be blank. Notification email is invalid
