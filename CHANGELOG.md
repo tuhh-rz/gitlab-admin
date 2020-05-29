@@ -60,3 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improved
 - Subcommand `bsa` -> Catch exception
   - gitlab.exceptions.GitlabBlockError: 500: Notification email can't be blank. Notification email is invalid
+  
+## [0.10.2] - 2020-05-29
+### Improved
+- Subcommand `bsa` -> stob blocking migration-bot

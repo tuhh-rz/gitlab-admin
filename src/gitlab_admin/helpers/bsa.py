@@ -81,11 +81,8 @@ class Bsa:
 
     @staticmethod
     def block_account(element, score_results):
-        try:
-            element.block()
-        except config.exceptions.GitlabBlockError as err:
-            print(element)
-            print(err)
+
+        element.block()
 
         msg = email.message.EmailMessage()
         msg.set_content("""\
@@ -275,113 +272,115 @@ https://collaborating.tuhh.de/
             # if element.id == 3450:
             score = 0
             score_results = ""
-            if element.state == 'active' and element.username != 'ghost' and element.external:
-                # if element.state == 'blocked' and element.username != 'ghost':
-                # if element.state == 'active' and element.username != 'ghost':
-                # if element.username != 'ghost':
-                # self.printFullInfo(element, projects_member_ids, groups_member_ids)
-                # score_def = "location"
-                # yes_or_no = "yes" if  str(element.location).lower() in self.trusted_countries else "no"
-                # score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
-                #     score_defs[score_def][yes_or_no]))
-                # score += score_defs[score_def][yes_or_no]
+            if element.external and element.state == 'active':
+                if element.username != 'ghost' and element.username != 'migration-bot':
+                    # if element.state == 'blocked' and element.username != 'ghost':
+                    # if element.state == 'active' and element.username != 'ghost':
+                    # if element.username != 'ghost':
+                    # self.printFullInfo(element, projects_member_ids, groups_member_ids)
+                    # score_def = "location"
+                    # yes_or_no = "yes" if  str(element.location).lower() in self.trusted_countries else "no"
+                    # score_results += (score_defs[score_def]["description"] + " " + yes_or_no + " -> " + str(
+                    #     score_defs[score_def][yes_or_no]))
+                    # score += score_defs[score_def][yes_or_no]
 
-                score_def = "projects_limit"
-                yes_or_no = "yes" if element.projects_limit > 0 else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "projects_limit"
+                    yes_or_no = "yes" if element.projects_limit > 0 else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "bio"
-                yes_or_no = "yes" if str(element.bio) == 'None' or str(element.bio) == '' else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "bio"
+                    yes_or_no = "yes" if str(element.bio) == 'None' or str(element.bio) == '' else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "identities"
-                yes_or_no = "yes" if len(element.identities) > 0 else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "identities"
+                    yes_or_no = "yes" if len(element.identities) > 0 else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "website_url"
-                yes_or_no = "yes" if str(element.website_url) == 'None' or str(element.website_url) == '' else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "website_url"
+                    yes_or_no = "yes" if str(element.website_url) == 'None' or str(element.website_url) == '' else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "email"
-                yes_or_no = "yes" if element.email.split('@')[1] in gitlab_admin.trusted_domains else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "email"
+                    yes_or_no = "yes" if element.email.split('@')[1] in gitlab_admin.trusted_domains else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "private_profile"
-                yes_or_no = "yes" if element.private_profile else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "private_profile"
+                    yes_or_no = "yes" if element.private_profile else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "is_admin"
-                yes_or_no = "yes" if element.is_admin else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "is_admin"
+                    yes_or_no = "yes" if element.is_admin else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "can_create_group"
-                yes_or_no = "yes" if element.can_create_group else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "can_create_group"
+                    yes_or_no = "yes" if element.can_create_group else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "two_factor_enabled"
-                yes_or_no = "yes" if element.two_factor_enabled else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "two_factor_enabled"
+                    yes_or_no = "yes" if element.two_factor_enabled else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "can_create_project"
-                yes_or_no = "yes" if element.can_create_project else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "can_create_project"
+                    yes_or_no = "yes" if element.can_create_project else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "projects_member_ids"
-                yes_or_no = "yes" if element.id in self.projects_member_ids else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "projects_member_ids"
+                    yes_or_no = "yes" if element.id in self.projects_member_ids else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "groups_member_ids"
-                yes_or_no = "yes" if element.id in self.groups_member_ids else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
+                    score_def = "groups_member_ids"
+                    yes_or_no = "yes" if element.id in self.groups_member_ids else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
 
-                score_def = "last_activity_on"
-                # print(datetime.strptime(element.last_activity_on, '%Y-%m-%d'))
-                # print (self.deadline)
-                yes_or_no = "yes" if element.last_activity_on and self.deadline < datetime.strptime(
-                    element.last_activity_on, '%Y-%m-%d') else "no"
-                score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
-                    score_defs[score_def][yes_or_no]) + "\n")
-                score += score_defs[score_def][yes_or_no]
-                score_results += ("\nScore: " + str(
-                    score) + " (A value of > " + str(
-                    self.threshold) + " is required to be classified as orphaned.)\n\n")
+                    score_def = "last_activity_on"
+                    # print(datetime.strptime(element.last_activity_on, '%Y-%m-%d'))
+                    # print (self.deadline)
+                    yes_or_no = "yes" if element.last_activity_on and self.deadline < datetime.strptime(
+                        element.last_activity_on, '%Y-%m-%d') else "no"
+                    score_results += (score_defs[score_def]["description"] + " " + yes_or_no.upper() + " -> " + str(
+                        score_defs[score_def][yes_or_no]) + "\n")
+                    score += score_defs[score_def][yes_or_no]
+                    score_results += ("\nScore: " + str(
+                        score) + " (A value of > " + str(
+                        self.threshold) + " is required to be classified as orphaned.)\n\n")
 
-                score_results += ("ID: " + str(element.id) + "\n")
-                score_results += ("Name: " + element.name + "\n")
-                score_results += ("eMail: " + element.email + "\n")
-                score_results += ("URL: " + element.web_url + "\n")
+                    score_results += ("ID: " + str(element.id) + "\n")
+                    score_results += ("Name: " + element.name + "\n")
+                    score_results += ("Username: " + element.username + "\n")
+                    score_results += ("eMail: " + element.email + "\n")
+                    score_results += ("URL: " + element.web_url + "\n")
 
-                if score > self.threshold:
-                    print("================================================================================")
-                    print("Account:")
-                    print("================================================================================")
-                    print("\nResults:\n" + score_results)
+                    if score > self.threshold:
+                        print("================================================================================")
+                        print("Account:")
+                        print("================================================================================")
+                        print("\nResults:\n" + score_results)
 
-                    self.fire(element, score_results)
+                        self.fire(element, score_results)
 
         with open(self.path_whitelist, 'w+') as handle:
             json.dump(list(self.whitelist_member_ids), handle)
