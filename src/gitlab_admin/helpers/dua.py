@@ -30,7 +30,8 @@ class Dua:
         for element in gitlab_admin.getallusers(self.gl):
             if not element.confirmed_at and element.external:
                 if element.username != 'ghost' and element.username != 'migration-bot' and element.username != 'alert-bot':
-                    if deadline > datetime.strptime(element.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%f'):
+                    # Am 01.06.2020 war wieder ein Z nötig
+                    if deadline > datetime.strptime(element.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%fZ'):
                         print('{} {:24} {:>5} {} {}'.format('delete account', str(
                             datetime.strptime(element.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%f')), element.id,
                                                             element.username, element.email))
