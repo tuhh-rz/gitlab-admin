@@ -273,7 +273,7 @@ https://collaborating.tuhh.de/
             score = 0
             score_results = ""
             if element.external and element.state == 'active':
-                if element.username != 'ghost' and element.username != 'migration-bot':
+                if element.username != 'ghost' and element.username != 'migration-bot' and element.username != 'alert-bot':
                     # if element.state == 'blocked' and element.username != 'ghost':
                     # if element.state == 'active' and element.username != 'ghost':
                     # if element.username != 'ghost':
