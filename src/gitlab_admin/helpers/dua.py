@@ -27,12 +27,13 @@ class Dua:
         deadline = datetime.today() - timedelta(days=self.timedelta)
         # print(deadline)
 
-        for user in gitlab_admin.getallusers(self.gl):
-            if not user.confirmed_at and user.external and user.username != 'ghost':
-                if deadline > datetime.strptime(user.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%f'):
-                    print('{} {:24} {:>5} {} {}'.format('delete account', str(
-                        datetime.strptime(user.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%f')), user.id,
-                                                        user.username, user.email))
+        for element in gitlab_admin.getallusers(self.gl):
+            if not element.confirmed_at and element.external:
+                if element.username != 'ghost' and element.username != 'migration-bot' and element.username != 'alert-bot':
+                    if deadline > datetime.strptime(element.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%f'):
+                        print('{} {:24} {:>5} {} {}'.format('delete account', str(
+                            datetime.strptime(element.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%f')), element.id,
+                                                            element.username, element.email))
 
-                    if not self.nono:
-                        user.delete()
+                        if not self.nono:
+                            element.delete()
