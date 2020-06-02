@@ -23,7 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Renamed
 - Subcommand `sac` -> `bsa`
 
-
 ## [0.4.0] - 2019-05-02
 ### Added
 - Subcommand `gfe` -> get former external accounts
@@ -64,3 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.10.2] - 2020-05-29
 ### Improved
 - Subcommand `bsa` -> stob blocking migration-bot
+
+## [0.10.3] - 2020-06-02
+### Improved
+- Subcommand `dua` -> ignore known bots
