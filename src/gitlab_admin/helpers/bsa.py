@@ -82,10 +82,14 @@ class Bsa:
     @staticmethod
     def block_account(element, score_results):
 
-        element.block()
+        if element.email == "":
+            print("No email, no block :cP")
+            print(element)
+        else:
+            element.block()
 
-        msg = email.message.EmailMessage()
-        msg.set_content("""\
+            msg = email.message.EmailMessage()
+            msg.set_content("""\
 Hallo """ + element.name + """,\
 
 
@@ -126,20 +130,20 @@ https://www.tuhh.de/
 https://collaborating.tuhh.de/
 """)
 
-        msg['Subject'] = '[TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
-        msg['From'] = 'nobody@tuhh.de'
-        msg['To'] = element.email
+            msg['Subject'] = '[TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
+            msg['From'] = 'nobody@tuhh.de'
+            msg['To'] = element.email
 
-        # msg['Subject'] = '[BETA INFO][TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
-        # msg['From'] = 'nobody@tuhh.de'
-        # msg['To'] = "rzt+container@rz.tu-harburg.de"
+            # msg['Subject'] = '[BETA INFO][TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
+            # msg['From'] = 'nobody@tuhh.de'
+            # msg['To'] = "rzt+container@rz.tu-harburg.de"
 
-        # try:
-        s = smtplib.SMTP('localhost')
-        s.send_message(msg)
-        s.quit()
-        # except ConnectionRefusedError:
-        #     pass
+            # try:
+            s = smtplib.SMTP('localhost')
+            s.send_message(msg)
+            s.quit()
+            # except ConnectionRefusedError:
+            #     pass
 
     def fire(self, element, score_results):
         if self.cron:
@@ -273,7 +277,7 @@ https://collaborating.tuhh.de/
             score = 0
             score_results = ""
             if element.external and element.state == 'active':
-                if element.username != 'ghost' and element.username != 'migration-bot':
+                if element.username != 'ghost' and element.username != 'migration-bot' and element.username != 'alert-bot':
                     # if element.state == 'blocked' and element.username != 'ghost':
                     # if element.state == 'active' and element.username != 'ghost':
                     # if element.username != 'ghost':
