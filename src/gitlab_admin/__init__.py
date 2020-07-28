@@ -3,7 +3,7 @@ import getpass
 from gitlab import exceptions
 
 name = "gitlab-admin"  # type: str
-__version__ = '0.10.4'
+__version__ = '0.10.6'
 
 trusted_domains = (
     "tuhh.de", "tu-harburg.de", "uni-hamburg.de", "hcu-hamburg.de", "hsu-hh.de", "haw-hamburg.de", "tum.de",

@@ -68,6 +68,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improved
 - Subcommand `dua` -> ignore known bots
 
-## [0.10.4] - 2020-07-28
-### Improved
+## [0.10.4] - 2020-06-02
+### Fixed
+- Subcommand `dua` -> ValueError: unconverted data remains: Z
+
+## [0.10.5] - 2020-06-02
+### Fixed
+- Subcommand `bsa` -> ignore alert-bot
+
+## [0.10.6] - 2020-07-28
+### Fixed
 - Subcommand `bsa` -> ignore accounts without email
