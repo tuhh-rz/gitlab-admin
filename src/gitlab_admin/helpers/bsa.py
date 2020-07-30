@@ -6,7 +6,7 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from gitlab import Gitlab, config
+from gitlab import Gitlab, config, GitlabBlockError
 
 import gitlab_admin
 
@@ -86,7 +86,11 @@ class Bsa:
             print("No email, no block :cP")
             print(element)
         else:
-            element.block()
+            try:
+                element.block()
+            except GitlabBlockError as err:
+                print(err)
+                print(element)
 
             msg = email.message.EmailMessage()
             msg.set_content("""\
