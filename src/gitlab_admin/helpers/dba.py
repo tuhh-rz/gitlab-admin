@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime, timedelta
 
 from gitlab import Gitlab, config
@@ -18,7 +19,7 @@ class Dba:
                 gitlab_instance,
                 private_token)
         except config.GitlabConfigMissingError as err:
-            print(err)
+            print(err, file=sys.stderr)
 
     def main(self):
         if self.nono:

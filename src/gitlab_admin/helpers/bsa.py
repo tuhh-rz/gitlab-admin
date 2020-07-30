@@ -46,7 +46,7 @@ class Bsa:
                 self.gitlab_instance,
                 private_token)
         except config.GitlabConfigMissingError as err:
-            print(err)
+            print(err, file=sys.stderr)
 
     def signal_handler(self):
         print('You pressed Ctrl+C!')
@@ -89,18 +89,19 @@ class Bsa:
             try:
                 element.block()
             except GitlabBlockError as err:
-                print(err)
-                print(element)
+                print(err, file=sys.stderr)
+                print(element, file=sys.stderr)
 
             msg = email.message.EmailMessage()
             msg.set_content("""\
 Hallo """ + element.name + """,\
 
 
-Ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als verwaist eingestuft und aus diesem Grund
-blockiert.
-Wenn Sie der Meinung sind, dass das eine falsche Entscheidung ist, dann setzen Sie sich bitte mit dem Servicedesk des Rechenzentrums der TUHH in Verbindung. Die Kontaktdaten finden Sie auf der Seite der TUHH (https://www.tuhh.de/).
-Alternativ können sie sich auch an einen Mitarbeiter oder eine Mitarbeiterin der Projekte wenden, in denen sie mitarbeiten.
+Ihr GitLab Account der TUHH (https://collaborating.tuhh.de/) wurde als verwaist eingestuft und aus diesem Grund 
+blockiert. Wenn Sie der Meinung sind, dass das eine falsche Entscheidung ist, dann setzen Sie sich bitte mit dem 
+Servicedesk des Rechenzentrums der TUHH in Verbindung. Die Kontaktdaten finden Sie auf der Seite der TUHH (
+https://www.tuhh.de/). Alternativ können sie sich auch an einen Mitarbeiter oder eine Mitarbeiterin der Projekte 
+wenden, in denen sie mitarbeiten. 
 
 
 """ + score_results + """
@@ -118,9 +119,10 @@ https://collaborating.tuhh.de/
 Hello """ + element.name + """,\
 
 
-Your GitLab account at TUHH (https://collaborating.tuhh.de/) has been blocked due to orphan status.
-If you think this is a wrong decision, please contact the TUHH Data Center Service Desk. The contact details can be found on the TUHH website (https://www.tuhh.de/).
-Alternatively, you can also contact a member of staff of the projects in which you are involved.
+Your GitLab account at TUHH (https://collaborating.tuhh.de/) has been blocked due to orphan status. If you think this 
+is a wrong decision, please contact the TUHH Data Center Service Desk. The contact details can be found on the TUHH 
+website (https://www.tuhh.de/). Alternatively, you can also contact a member of staff of the projects in which you 
+are involved. 
 
 
 """ + score_results + """
@@ -228,7 +230,8 @@ https://collaborating.tuhh.de/
                     group_members = group.members.list(as_list=False)
                     for group_member in group_members:
                         self.groups_member_ids.add(group_member.id)
-                except Exception:
+                except Exception as err:
+                    print(err, file=sys.stderr)
                     pass
             with open(self.path_groups_member_ids, 'w') as handle:
                 json.dump(list(self.groups_member_ids), handle)
@@ -250,7 +253,8 @@ https://collaborating.tuhh.de/
 
                     for project_member in project_members:
                         self.projects_member_ids.add(project_member.id)
-                except Exception:
+                except Exception as err:
+                    print(err, file=sys.stderr)
                     pass
             with open(self.path_projects_member_ids, 'w') as handle:
                 json.dump(list(self.projects_member_ids), handle)

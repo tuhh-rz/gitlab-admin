@@ -79,41 +79,38 @@ def create_parser():
 
 
 def gfe(args):
-    gfe = Gfe(args.gitlab_instance, args.tokenfile)
-    gfe.main()
+    Gfe(args.gitlab_instance, args.tokenfile).main()
 
 
 def ffe(args):
-    ffe = Ffe(args.gitlab_instance, args.tokenfile, args.nono)
-    ffe.main()
+    Ffe(args.gitlab_instance, args.tokenfile, args.nono).main()
 
 
 def bsa(args):
-    bsa = Bsa(args.gitlab_instance, args.tokenfile, args.nocache, args.nono, args.cron)
-    bsa.main()
+    Bsa(args.gitlab_instance, args.tokenfile, args.nocache, args.nono, args.cron).main()
 
 
 def cla(args):
-    cla = Cla(args.gitlab_instance, args.tokenfile, args.nono, args.cron)
-    cla.main()
+    Cla(args.gitlab_instance, args.tokenfile, args.nono, args.cron).main()
+
 
 def dua(args):
-    dua = Dua(args.gitlab_instance, args.tokenfile, args.nono, args.timedelta)
-    dua.main()
+    Dua(args.gitlab_instance, args.tokenfile, args.nono, args.timedelta).main()
 
 
 def dba(args):
-    dba = Dba(args.gitlab_instance, args.tokenfile, args.nono, args.timedelta)
-    dba.main()
+    Dba(args.gitlab_instance, args.tokenfile, args.nono, args.timedelta).main()
+
 
 def spl(args):
-    spl = Spl(args.gitlab_instance, args.tokenfile, args.nono, args.limit)
-    spl.main()
+    Spl(args.gitlab_instance, args.tokenfile, args.nono, args.limit).main()
+
 
 def main():
     parser = create_parser()
     args = parser.parse_args()
     args.func(args)
+
 
 if __name__ == "__main__":
     main()

@@ -24,11 +24,11 @@ class TestDua(CommandLineTestCase):
         self.parser.parse_args(['https://collaborating.tuhh.de', 'dua'])
 
     def test_gitlab_forbidden(self):
-        dua = Dua(gitlab_instance='https://collaborating.tuhh.de', private_token='', timedelta=1)
+        dua = Dua(gitlab_instance='https://collaborating.tuhh.de', timedelta=1)
         with self.assertRaises(gitlab.exceptions.GitlabListError):
             dua.main()
 
     def test_gitlab_unauthorized(self):
-        dua = Dua(gitlab_instance='https://collaborating.tuhh.de', private_token='foobar', timedelta=1)
+        dua = Dua(gitlab_instance='https://collaborating.tuhh.de', timedelta=1)
         with self.assertRaises(gitlab.exceptions.GitlabAuthenticationError):
             dua.main()

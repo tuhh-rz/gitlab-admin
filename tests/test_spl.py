@@ -1,8 +1,10 @@
-from gitlab_admin import api
-from gitlab_admin.helpers.spl import Spl
 from unittest import TestCase
 
 import gitlab
+
+from gitlab_admin import api
+from gitlab_admin.helpers.spl import Spl
+
 
 class CommandLineTestCase(TestCase):
 
@@ -27,6 +29,6 @@ class TestSpl(CommandLineTestCase):
             spl.main()
 
     def test_gitlab_unauthorized(self):
-        spl = Spl(gitlab_instance='https://collaborating.tuhh.de', private_token='foobar', limit=1)
+        spl = Spl(gitlab_instance='https://collaborating.tuhh.de', limit=1)
         with self.assertRaises(gitlab.exceptions.GitlabAuthenticationError):
             spl.main()

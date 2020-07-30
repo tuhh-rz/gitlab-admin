@@ -1,3 +1,5 @@
+import sys
+
 from gitlab import Gitlab, config
 
 from gitlab_admin import getallusers, gettoken
@@ -13,7 +15,7 @@ class Gfe:
                 gitlab_instance,
                 private_token)
         except config.GitlabConfigMissingError as err:
-            print(err)
+            print(err, file=sys.stderr)
 
     def main(self):
 

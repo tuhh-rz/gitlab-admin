@@ -1,4 +1,5 @@
 import getpass
+import sys
 
 from gitlab import exceptions
 
@@ -34,4 +35,4 @@ def getuser(gl, id):
         user = gl.users.get(id)
         return user
     except exceptions.GitlabGetError as err:
-        print(err)
+        print(err, file=sys.stderr)

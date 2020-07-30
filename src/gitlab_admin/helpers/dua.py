@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime, timedelta
 
 from gitlab import Gitlab, config
@@ -18,7 +19,7 @@ class Dua:
                 gitlab_instance,
                 private_token)
         except config.GitlabConfigMissingError as err:
-            print(err)
+            print(err, file=sys.stderr)
 
     def main(self):
         if self.nono:
@@ -29,11 +30,13 @@ class Dua:
 
         for element in gitlab_admin.getallusers(self.gl):
             if not element.confirmed_at and element.external:
-                if element.username != 'ghost' and element.username != 'migration-bot' and element.username != 'alert-bot':
+                if element.username != 'ghost' and \
+                        element.username != 'migration-bot' and \
+                        element.username != 'alert-bot':
                     # Am 01.06.2020 war wieder ein Z nötig
                     if deadline > datetime.strptime(element.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%fZ'):
-                        print('{} {:24} {:>5} {} {}'.format('delete account', str(                   
-                        # Am 01.06.2020 war wieder ein Z nötig
+                        print('{} {:24} {:>5} {} {}'.format('delete account', str(
+                            # Am 01.06.2020 war wieder ein Z nötig
                             datetime.strptime(element.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%fZ')), element.id,
                                                             element.username, element.email))
 
