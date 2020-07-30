@@ -79,3 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.10.6] - 2020-07-28
 ### Fixed
 - Subcommand `bsa` -> ignore accounts without email
+
+## [0.11.0] - 2020-06-02
+### Fixed
+- Subcommand `bsa` -> ignore support-bot

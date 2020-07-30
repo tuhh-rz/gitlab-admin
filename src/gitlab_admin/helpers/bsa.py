@@ -259,29 +259,33 @@ https://collaborating.tuhh.de/
             with open(self.path_whitelist, 'r') as handle:
                 self.whitelist_member_ids = set(json.loads(handle.read()))
 
-        score_defs = {}
-        score_defs["location"] = ({"yes": -10, "no": 0, "description": "Trusted counntry?"})
-        score_defs["projects_limit"] = ({"yes": -10, "no": 0, "description": "Project limit not 0?"})
-        score_defs["bio"] = ({"yes": -0, "no": 5, "description": "Unused bio?"})
-        score_defs["identities"] = ({"yes": -10, "no": 0, "description": "Additional identities?"})
-        score_defs["website_url"] = ({"yes": -0, "no": 5, "description": "Unused Website?"})
-        score_defs["email"] = ({"yes": -10, "no": 0, "description": "Trusted mail domain?"})
-        score_defs["private_profile"] = ({"yes": -10, "no": 0, "description": "Private profile?"})
-        score_defs["is_admin"] = ({"yes": -100, "no": 0, "description": "Is Admin?"})
-        score_defs["can_create_group"] = ({"yes": -10, "no": 0, "description": "Can create groups?"})
-        score_defs["can_create_project"] = ({"yes": -10, "no": 0, "description": "Can create projects?"})
-        score_defs["two_factor_enabled"] = ({"yes": -10, "no": 0, "description": "Two factor authentication enabled?"})
-        score_defs["projects_member_ids"] = ({"yes": -15, "no": 0, "description": "Is project member?"})
-        score_defs["groups_member_ids"] = ({"yes": -15, "no": 0, "description": "Is group member?"})
-        score_defs["last_activity_on"] = (
-            {"yes": -15, "no": 0, "description": "Acitivity in the last " + str(self.deadline_days) + " day(s) ago?"})
+        score_defs = {"location": ({"yes": -10, "no": 0, "description": "Trusted country?"}),
+                      "projects_limit": ({"yes": -10, "no": 0, "description": "Project limit not 0?"}),
+                      "bio": ({"yes": -0, "no": 5, "description": "Unused bio?"}),
+                      "identities": ({"yes": -10, "no": 0, "description": "Additional identities?"}),
+                      "website_url": ({"yes": -0, "no": 5, "description": "Unused Website?"}),
+                      "email": ({"yes": -10, "no": 0, "description": "Trusted mail domain?"}),
+                      "private_profile": ({"yes": -10, "no": 0, "description": "Private profile?"}),
+                      "is_admin": ({"yes": -100, "no": 0, "description": "Is Admin?"}),
+                      "can_create_group": ({"yes": -10, "no": 0, "description": "Can create groups?"}),
+                      "can_create_project": ({"yes": -10, "no": 0, "description": "Can create projects?"}),
+                      "two_factor_enabled": (
+                          {"yes": -10, "no": 0, "description": "Two factor authentication enabled?"}),
+                      "projects_member_ids": ({"yes": -15, "no": 0, "description": "Is project member?"}),
+                      "groups_member_ids": ({"yes": -15, "no": 0, "description": "Is group member?"}),
+                      "last_activity_on": (
+                          {"yes": -15, "no": 0,
+                           "description": "Activity in the last " + str(self.deadline_days) + " day(s) ago?"})}
 
         for element in gitlab_admin.getallusers(self.gl):
             # if element.id == 3450:
             score = 0
             score_results = ""
             if element.external and element.state == 'active':
-                if element.username != 'ghost' and element.username != 'migration-bot' and element.username != 'alert-bot':
+                if element.username != 'ghost' and \
+                        element.username != 'migration-bot' and \
+                        element.username != 'alert-bot' and \
+                        element.username != 'support-bot':
                     # if element.state == 'blocked' and element.username != 'ghost':
                     # if element.state == 'active' and element.username != 'ghost':
                     # if element.username != 'ghost':
