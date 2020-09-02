@@ -10,12 +10,11 @@ pylint = "*"
 
 [packages]
 python-gitlab = ">=1.8.0"
-googletrans = "*"
 pathlib = "*"
 simplejson = "*"
 gitlab-admin = {editable = true,path = "."}
 pylint = "*"
 python-ldap = "*"
+python-dateutil = "*"
 
-[requires]
-python_version = "3.5"
+
