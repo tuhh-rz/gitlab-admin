@@ -1,5 +1,5 @@
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, parser
 
 from gitlab import Gitlab, config
 
@@ -33,11 +33,9 @@ class Dua:
                 if element.username != 'ghost' and \
                         element.username != 'migration-bot' and \
                         element.username != 'alert-bot':
-                    # Am 01.06.2020 war wieder ein Z nötig
-                    if deadline > datetime.strptime(element.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%fZ'):
-                        print('{} {:24} {:>5} {} {}'.format('delete account', str(
-                            # Am 01.06.2020 war wieder ein Z nötig
-                            datetime.strptime(element.created_at.split('+')[0], '%Y-%m-%dT%H:%M:%S.%fZ')), element.id,
+                    created_at = element.created_at.split('+')[0]
+                    if deadline.astimezone() > parser.isoparse(created_at).astimezone():
+                        print('{} {:24} {:>5} {} {}'.format('delete account', str(created_at), element.id,
                                                             element.username, element.email))
 
                         if not self.nono:
