@@ -84,6 +84,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Subcommand `bsa` -> ignore support-bot
 
-## [0.11.1] - 2020-06-02
+## [0.11.1] - 2020-09-02
 ### Fixed
 - Subcommand `dua` -> time zone mismatch
