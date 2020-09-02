@@ -1,6 +1,7 @@
 import sys
-from datetime import datetime, timedelta, parser
+from datetime import datetime, timedelta
 
+from dateutil import parser
 from gitlab import Gitlab, config
 
 import gitlab_admin
