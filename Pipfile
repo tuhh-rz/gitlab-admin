@@ -7,6 +7,7 @@ verify_ssl = true
 pytest = "*"
 rope = "*"
 pylint = "*"
+pipenv-setup = "*"
 
 [packages]
 python-gitlab = ">=1.8.0"
@@ -15,6 +16,4 @@ simplejson = "*"
 gitlab-admin = {editable = true,path = "."}
 pylint = "*"
 python-ldap = "*"
-python-dateutil = "*"
-
-
+python-dateutil = ">=2.8.0"
