@@ -4,7 +4,7 @@ import sys
 from gitlab import exceptions
 
 name = "gitlab-admin"  # type: str
-__version__ = '0.11.2'
+__version__ = '0.11.3'
 
 trusted_domains = (
     "tuhh.de", "tu-harburg.de", "uni-hamburg.de", "hcu-hamburg.de", "hsu-hh.de", "haw-hamburg.de", "tum.de",

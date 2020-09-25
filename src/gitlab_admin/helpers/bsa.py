@@ -139,6 +139,7 @@ https://collaborating.tuhh.de/
             msg['Subject'] = '[TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
             msg['From'] = 'nobody@tuhh.de'
             msg['To'] = element.email
+            msg['CC'] = "rzt+container@rz.tu-harburg.de"
 
             # msg['Subject'] = '[BETA INFO][TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
             # msg['From'] = 'nobody@tuhh.de'
@@ -147,6 +148,12 @@ https://collaborating.tuhh.de/
             # try:
             s = smtplib.SMTP('localhost')
             s.send_message(msg)
+
+            msg['Subject'] = '[TUHH GitLab] Blockierter Account'
+            msg['To'] = "rzt+container@rz.tu-harburg.de"
+
+            s.send_message(msg)
+
             s.quit()
             # except ConnectionRefusedError:
             #     pass
