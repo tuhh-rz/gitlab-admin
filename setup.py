@@ -13,7 +13,7 @@ from io import open
 from os import path
 
 # Always prefer setuptools over distutils
-from setuptools import setup, find_packages
+from setuptools import setup
 
 from src.gitlab_admin import __version__
 
@@ -116,8 +116,12 @@ setup(
     #
     #   py_modules=["my_module"],
     py_modules=['gitlab_admin.api'],
+    package_dir={
+        '': 'src'
+    },
     #
-    packages=find_packages(exclude=["contrib", "docs", "tests"]),  # Required
+    # packages=find_packages(exclude=["contrib", "docs", "tests"]),  # Required
+    
     # Specify which Python versions you support. In contrast to the
     # 'Programming Language' classifiers above, 'pip install' will check this
     # and refuse to install the project if the version does not match. If you
