@@ -92,6 +92,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Subcommand `dua` -> fix import error
 
-## [0.11.2] - 2020-09-25
+## [0.11.3] - 2020-09-25
 ### Fixed
 - Subcommand `bsa` -> add log mail
