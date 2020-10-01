@@ -95,3 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.11.3] - 2020-09-25
 ### Fixed
 - Subcommand `bsa` -> add log mail
+
+## [0.11.4] - 2020-10-01
+### Fixed
+- Subcommand `bsa` -> fix send message
