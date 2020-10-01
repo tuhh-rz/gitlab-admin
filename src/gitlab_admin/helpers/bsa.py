@@ -139,16 +139,11 @@ https://collaborating.tuhh.de/
             msg['Subject'] = '[TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked.'
             msg['From'] = 'nobody@tuhh.de'
             msg['To'] = element.email
-            msg['CC'] = "rzt+container@rz.tu-harburg.de"
+            # msg['To'] = 'andreas.boettger@tuhh.de'
+            msg['Bcc'] = "rzt+container@rz.tu-harburg.de"
 
             s = smtplib.SMTP('localhost')
             s.send_message(msg)
-
-            msg['Subject'] = '[TUHH GitLab] Blockierter Account'
-            msg['To'] = "rzt+container@rz.tu-harburg.de"
-
-            s.send_message(msg)
-
             s.quit()
 
     def fire(self, element, score_results):
