@@ -93,6 +93,12 @@ class Bsa:
                 print(element, file=sys.stderr)
 
             msg = email.message.EmailMessage()
+
+            msg['subject'] = "Your account has been blocked."
+            msg['from'] = "nobody@tuhh.de"
+            msg['to'] = element.email
+            msg['bcc'] = "rzt+container@rz.tu-harburg.de"
+
             msg.set_content("""\
 Hallo """ + element.name + """,\
 
@@ -134,12 +140,10 @@ Your GitLab Administrator
 
 https://www.tuhh.de/
 https://collaborating.tuhh.de/
-""")
 
-            msg['subject'] = "Your account has been blocked."
-            msg['from'] = "nobody@tuhh.de"
-            msg['to'] = element.email
-            msg['bcc'] = "rzt+container@rz.tu-harburg.de"
+""" + gitlab_admin.__version__ + """
+
+""")
 
             s = smtplib.SMTP('localhost')
             s.send_message(msg)
