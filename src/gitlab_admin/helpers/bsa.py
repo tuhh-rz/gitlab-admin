@@ -94,7 +94,7 @@ class Bsa:
 
             msg = email.message.EmailMessage()
 
-            msg['subject'] = "Your account has been blocked."
+            msg['subject'] = "[TUHH GitLab] Ihr Account wurde blockiert / Your account has been blocked."
             msg['from'] = "nobody@tuhh.de"
             msg['to'] = element.email
             msg['bcc'] = "rzt+container@rz.tu-harburg.de"
