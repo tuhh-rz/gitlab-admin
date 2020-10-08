@@ -115,7 +115,17 @@ setup(
     # called `my_module.py` to exist:
     #
     #   py_modules=["my_module"],
-    py_modules=['gitlab_admin.api', 'gitlab_admin.helpers'],
+    py_modules=[
+        'gitlab_admin',
+        'gitlab_admin.helpers',
+        'gitlab_admin.helpers.bsa',
+        'gitlab_admin.helpers.cla',
+        'gitlab_admin.helpers.dba',
+        'gitlab_admin.helpers.dua',
+        'gitlab_admin.helpers.ffe',
+        'gitlab_admin.helpers.gfe',
+        'gitlab_admin.helpers.spl',
+    ],
     package_dir={
         '': 'src'
     },
